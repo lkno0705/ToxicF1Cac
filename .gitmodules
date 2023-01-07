@@ -1,0 +1,3 @@
+[submodule "dictionaries/grievancedictionary"]
+	path = dictionaries/grievancedictionary
+	url = git@github.com:Isabellevdv/grievancedictionary.git
