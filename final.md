@@ -82,6 +82,114 @@ From an economic point of view, fandom and fan cultures are seen as the ideal co
 
 ## The Dataset
 
+
+```python
+from dotenv import dotenv_values
+import googleapiclient.discovery
+import pandas as pd
+
+api_keys = dotenv_values("keys.env")
+api_service_name = "youtube"
+api_version = "v3"
+api_key = api_keys["YOUTUBE_API_KEY"]
+max_results = 1000
+youtube_api = googleapiclient.discovery.build(api_service_name, api_version, developerKey = api_key)
+```
+
+
+```python
+Formula1_official_channel = youtube_api.channels().list(part='snippet' ,forUsername='Formula1').execute()['items'][0]
+videos_after_2020 = youtube_api.search().list(channelId=Formula1_official_channel["id"],
+        maxResults=max_results,
+        publishedAfter="2020-01-01T00:00:00Z",
+        part='id').execute()
+video_ids_after_2020 = [item['id']['videoId'] for item in videos_after_2020['items']]
+while len(video_ids_after_2020) < max_results and "nextPageToken" in videos_after_2020.keys():
+        videos_after_2020 = youtube_api.search().list(channelId=Formula1_official_channel["id"],
+        maxResults=max_results,
+        publishedAfter="2020-01-01T00:00:00Z",
+        part='id',
+        pageToken=videos_after_2020["nextPageToken"]).execute()
+        video_ids_after_2020 = video_ids_after_2020 + [item['id']['videoId'] for item in videos_after_2020['items']]
+
+```
+
+
+```python
+df_list = []
+for video_id in video_ids_after_2020:
+    video_data = youtube_api.videos().list(part='snippet, statistics', id=video_id).execute()
+    snippet = video_data['items'][0]['snippet']
+    statistics = video_data['items'][0]['statistics']
+    df_list.append(
+    {
+        "video_id":video_id,
+        "title": snippet['title'],
+        "description": snippet['description'],
+        "channel": snippet['channelTitle'],
+        "published_at": snippet['publishedAt'],
+        "tags": snippet['tags'] if "tags" in snippet.keys() else None,
+        "like_count": statistics['likeCount'],
+        "favorite_count": statistics['favoriteCount'],
+        "comment_count": statistics['commentCount'] if "commentCount" in statistics.keys() else 0
+    })
+
+videos = pd.DataFrame(df_list)
+videos
+```
+
+
+```python
+df_list_comments = []
+for video_id in video_ids_after_2020:
+    if videos.loc[videos['video_id'] == video_id].comment_count.iloc[0] == 0:
+        continue
+    top_level_comments = youtube_api.commentThreads().list(part="snippet",
+        maxResults=2,
+        order="relevance",
+        videoId=video_id).execute()['items']
+    for top_level_comment in top_level_comments:
+        replies = youtube_api.comments().list(part="snippet",
+            maxResults=2,
+            parentId=top_level_comment['snippet']['topLevelComment']['id']).execute()['items']
+        df_list_comments.append(
+        {
+            "video_id": video_id,
+            "id": top_level_comment['snippet']['topLevelComment']['id'],
+            "text": top_level_comment['snippet']['topLevelComment']['snippet']['textDisplay'],
+            "user": top_level_comment['snippet']['topLevelComment']['snippet']['authorChannelId']['value'],
+            "like_count": top_level_comment['snippet']['topLevelComment']['snippet']['likeCount'],
+            "published_at": top_level_comment['snippet']['topLevelComment']['snippet']['publishedAt'],
+            "reply_count": top_level_comment['snippet']['totalReplyCount']
+        })
+        for reply in replies:
+            df_list_comments.append(
+            {
+                "video_id": video_id,
+                "id": reply['id'],
+                "text": reply['snippet']['textDisplay'],
+                "user": reply['snippet']['authorChannelId']['value'],
+                "like_count": reply['snippet']['likeCount'],
+                "published_at": reply['snippet']['publishedAt'],
+                "reply_count": 0
+            })
+
+comment_df = pd.DataFrame(df_list_comments)
+comment_df
+```
+
+
+```python
+videos.to_pickle("datasets/video_data.pkl")
+comment_df.to_pickle("datasets/comment_data.pkl")
+```
+
+
+```python
+videos = pd.read_pickle("datasets/video_data.pkl")
+comment_df = pd.read_pickle("datasets/comment_data.pkl")
+```
+
 ## Dictionary Analysis
 
 ## Transformer Classifiers
@@ -100,13 +208,27 @@ os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs
 ```
 
     [NbConvertApp] Converting notebook final.ipynb to markdown
-    [NbConvertApp] Writing 7999 bytes to final.md
+    [NbConvertApp] Writing 21056 bytes to final.md
+    [WARNING] Citeproc: citation IIIlllIII not found
+    [WARNING] Citeproc: citation Miz not found
+    [WARNING] Citeproc: citation Sgt not found
+    [WARNING] Citeproc: citation TheConfidentNoob not found
+    Error producing PDF.
+    ! LaTeX Error: Unicode character 🫢 (U+1FAE2)
+                   not set up for use with LaTeX.
+    
+    See the LaTeX manual or LaTeX Companion for explanation.
+    Type  H <return>  for immediate help.
+     ...                                              
+                                                      
+    l.535 ...Something Loose Between Seb’s Legs 🫢
+    
 
 
 
 
 
-    0
+    11008
 
 
 
