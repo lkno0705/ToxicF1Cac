@@ -59,6 +59,16 @@ As the reports over toxic and abusive fan behaviours in social media and at live
 - Is the toxicity a "self-made" problem of Formula 1 and where is the toxicity originating from?
 
 ## Fundamentals
+In this chapter the necessary fundamental knowledge is presented.
+
+### Formula 1
+Formula 1 is the worlds most prestigous motor racing competition, as well as the world's most popular annual sporting series [@about_f1]. It marks the highest class of international open-wheel single-seater formula racing. The first Formula 1 competition was held in 1950, since then the competiton for the world drivers championship (wdc) which determines the worlds best driver and the world constructors championship (wcc) which determines the best team, is held annualy and is sanctioned by the Fédération Internationale de l'Automobile (FIA). During the competition (also called a season), Formula 1 visits a variety of different countries and racing tracks, each event (Grands Prix) is attended by thousands of people with millions watching from home [@formula_1_2023]. All rights of the Formula 1 brand and the competition itself is owned by Formula One World Championship Limited, which is a corporation, that provides media distribution and promotion services, besides that, it controls the contracts, distribtution, and commercial management of rights and licenses of formula 1 [@formula_1_limited_company_profile]. The term Formula 1 is used to describe the corporation, as well as the competition, as they can't exist without each other.
+
+### What is Fandom
+
+### Defining Toxic Fan behaviour
+
+### Youtube API
 
 ## Concept
 
@@ -82,7 +92,7 @@ os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs
 ```
 
     [NbConvertApp] Converting notebook final.ipynb to markdown
-    [NbConvertApp] Writing 4435 bytes to final.md
+    [NbConvertApp] Writing 4451 bytes to final.md
 
 
 
