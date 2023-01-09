@@ -14,10 +14,9 @@
         - hate speech -> [@van_der_vegt_grievance_2021]
         - insults -> [@van_der_vegt_grievance_2021]
     - Transformer classifier
-        - sentiment
-        - racism?
-        - misogynistic
-        - hate speech?
+        - sentiment -> cardiffnlp/twitter-roberta-base-sentiment-latest [@tweet_sentiment_classifier]
+        - racism -> jaumefib/datathon-against-racism [@hate_speech_classifier]
+        - hate speech -> Hate-speech-CNERG/dehatebert-mono-english [@racism_classifier]
     - statistical analysis
         - group toxic behavior by drivers and teams
         - group by topics
@@ -56,7 +55,7 @@ os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs
 ```
 
     [NbConvertApp] Converting notebook final.ipynb to markdown
-    [NbConvertApp] Writing 2033 bytes to final.md
+    [NbConvertApp] Writing 1791 bytes to final.md
 
 
 
