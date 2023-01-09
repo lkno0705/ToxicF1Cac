@@ -40,10 +40,32 @@
     - Applying Method 2
     - Results
 
+# Analysing Toxicity in Formula 1 Fandom - Computational Analysis of Communications Final
+Author: Leon Knorr
 
-```python
-import pandas as pd
-```
+Matr-Nr: 1902854
+
+## Introduction
+Formula 1 is the highest class of international racing for open-wheel single-seater formula racing cars and is generally considered the most competitive, fastest and hardest class of motor racing. Since it’s first season in 1950, Formula 1 is visiting a diverse list of many different countries, where the best drivers in the world are racing against each other in teams of two drivers to determine the best driver and the best team on the Formula 1 grid [@about_f1]. These events are visited by thousands of Fans, with millions more following them on television and social media. With the 2021 season being one of the closest and most entertaining seasons in the history of Formula 1, where Red Bulls Max Verstappen beat Mercedes driver Lewis Hamilton in the grand finale of the season under controversial circumstances after a full season of controversy, drama and intense on track battles and with the release of Netflix Drive To Survive, Formula 1s popularity is growing rapidly. But, reports of Toxic and abusive Fan behavior at events and in comment sections on social media are accumulating, and casts an ugly shadow over Formula 1s latest successes [@woodhouse_scary_2022].
+As the reports over toxic and abusive fan behaviours in social media and at live events are rising, Formula 1 as well as Fans and drivers are taking a stand against toxicity in the Formula 1 community. However, an independent and scientific analysis of this topic is missing and therefore the accusations are sort of hanging in the air without a solid scientific foundation. Therefore, in order to tackle this problem research into the toxicity of Formula 1 fandom is a necassety to gain valuable insights into understanding the problem, where it originates from and to build a foundation for future measures to make attending Formula 1 events as well as the media around it a safer and more enjoyable experience. To take the first step into this direction, this thesis will analyse Youtube comments of the Formula 1 channel in order to determine:
+
+- If the Formula 1 fandom is toxic
+- Are there specific groups that are more toxic then others?
+- Is the toxicity a "self-made" problem of Formula 1 and where is the toxicity originating from?
+
+## Fundamentals
+
+## Concept
+
+## The Dataset
+
+## Dictionary Analysis
+
+## Transformer Classifiers
+
+## Results
+
+## Bibliography
 
 <!--
 
@@ -55,7 +77,7 @@ os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs
 ```
 
     [NbConvertApp] Converting notebook final.ipynb to markdown
-    [NbConvertApp] Writing 1791 bytes to final.md
+    [NbConvertApp] Writing 4439 bytes to final.md
 
 
 
