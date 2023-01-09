@@ -1,3 +1,5 @@
+<!--
+
 # Final Report - Work in Progress
 - Research Hypothesis / Questions:
     - Is Formula 1 fandom Toxic?
@@ -27,6 +29,7 @@
         - Why do we need to analyze this
         - introduce the three research questions / hypothesis
     - Fundamentals
+        - Formula 1
         - What is fandom
         - Defining toxic fan behavior
         - Youtube API
@@ -39,6 +42,8 @@
     - Applying Method 1
     - Applying Method 2
     - Results
+
+-->
 
 # Analysing Toxicity in Formula 1 Fandom - Computational Analysis of Communications Final
 Author: Leon Knorr
@@ -77,7 +82,7 @@ os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs
 ```
 
     [NbConvertApp] Converting notebook final.ipynb to markdown
-    [NbConvertApp] Writing 4439 bytes to final.md
+    [NbConvertApp] Writing 4435 bytes to final.md
 
 
 
@@ -87,7 +92,4 @@ os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs
 
 
 
-
-```python
 -->
-```
