@@ -140,17 +140,23 @@ videos
 
 
 ```python
+video_ids_after_2020 = videos.video_id.to_list()
+video_ids_after_2020
+```
+
+
+```python
 df_list_comments = []
 for video_id in video_ids_after_2020:
     if videos.loc[videos['video_id'] == video_id].comment_count.iloc[0] == 0:
         continue
     top_level_comments = youtube_api.commentThreads().list(part="snippet",
-        maxResults=2,
+        maxResults=50,
         order="relevance",
         videoId=video_id).execute()['items']
     for top_level_comment in top_level_comments:
         replies = youtube_api.comments().list(part="snippet",
-            maxResults=2,
+            maxResults=50,
             parentId=top_level_comment['snippet']['topLevelComment']['id']).execute()['items']
         df_list_comments.append(
         {
@@ -174,7 +180,7 @@ for video_id in video_ids_after_2020:
                 "reply_count": 0
             })
 
-comment_df = pd.DataFrame(df_list_comments)
+comment_df: pd.DataFrame = pd.DataFrame(df_list_comments)
 comment_df
 ```
 
@@ -186,11 +192,73 @@ comment_df.to_pickle("datasets/comment_data.pkl")
 
 
 ```python
-videos = pd.read_pickle("datasets/video_data.pkl")
-comment_df = pd.read_pickle("datasets/comment_data.pkl")
+videos: pd.DataFrame = pd.read_pickle("datasets/video_data.pkl")
+comment_df: pd.DataFrame = pd.read_pickle("datasets/comment_data.pkl")
 ```
 
+
+```python
+videos
+```
+
+### Dataset limitations
+
 ## Dictionary Analysis
+
+### Othrus Lexicon for Toxicity
+
+
+```python
+comment_df
+```
+
+
+```python
+with open("dictionaries/toxic_words.txt") as toxic_words_file:
+    set_of_toxic_words: set = set([word.strip() for word in toxic_words_file.readlines()])
+set_of_toxic_words
+```
+
+
+```python
+import numpy as np
+from collections import Counter
+toxic_word_counter: Counter = Counter()
+toxic_word_count: list = []
+for row in comment_df.text:
+    toxic_words_in_comment: set = set(row.split(" ")).intersection(set_of_toxic_words)
+    toxic_word_counter.update(toxic_words_in_comment)
+    toxic_word_count.append(len(toxic_words_in_comment))
+comment_df["toxic_word_count"] = toxic_word_count
+```
+
+
+```python
+comment_df.loc[comment_df["toxic_word_count"] > 0]
+```
+
+
+```python
+toxic_word_counter
+```
+
+### Grievance Dictionary
+
+### Ethnic Slurs
+
+
+```python
+from os import listdir
+import os.path
+
+dict_files: list = list(filter(lambda f: f[-4:] == ".csv" ,listdir("dictionaries/ethnic_slurs/")))
+dict_df: pd.DataFrame = pd.DataFrame()
+for file in dict_files:
+    part = pd.read_csv(os.path.join("dictionaries/ethnic_slurs", file))
+    dict_df = pd.concat([part, dict_df])
+dict_df.reset_index(inplace=True, drop=True)
+dict_df
+```
 
 ## Transformer Classifiers
 
@@ -208,9 +276,14 @@ os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs
 ```
 
     [NbConvertApp] Converting notebook final.ipynb to markdown
-    [NbConvertApp] Writing 21056 bytes to final.md
+    [NbConvertApp] Writing 61274 bytes to final.md
+    [WARNING] Citeproc: citation FIA not found
     [WARNING] Citeproc: citation IIIlllIII not found
+    [WARNING] Citeproc: citation Keisuke not found
+    [WARNING] Citeproc: citation Marjan not found
     [WARNING] Citeproc: citation Miz not found
+    [WARNING] Citeproc: citation Oscar not found
+    [WARNING] Citeproc: citation Rizaldi not found
     [WARNING] Citeproc: citation Sgt not found
     [WARNING] Citeproc: citation TheConfidentNoob not found
     Error producing PDF.
@@ -221,7 +294,7 @@ os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs
     Type  H <return>  for immediate help.
      ...                                              
                                                       
-    l.535 ...Something Loose Between Seb’s Legs 🫢
+    l.1137 ...omething Loose Between Seb’s Legs 🫢
     
 
 
