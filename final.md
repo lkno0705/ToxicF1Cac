@@ -86,6 +86,9 @@ However toxic fan behaviour is not limited to racist, misogynistic comments that
 ## Concept
 
 ## The Dataset
+The dataset that will be used throughout this thesis consists of 40200 Comments with replys from 500 youtube videos that were uploaded since 2020 of the formula 1 youtube channel. To obtain this data, the Youtube API V3 was used.
+
+First up, the API has to be initialised, for this an api key is needed, that has to be stored in a .env file in the same directory as the jupyter notebook. This api key is then read in the following code cell and the youtube api is initialized through googles official googleapiclient library.
 
 
 ```python
@@ -100,6 +103,8 @@ api_key = api_keys["YOUTUBE_API_KEY"]
 max_results = 1000
 youtube_api = googleapiclient.discovery.build(api_service_name, api_version, developerKey = api_key)
 ```
+
+Now request to the Youtube API V3 can be made. Before we can scrape comments, the video id of the video that comments want to be obtain from is needed. Therefore, data about all videos since 2020 until now are requested. However the api will only retrieve 50 items per request, if there are more items that fit the search query the response is paged and contains a *nextPageToken*, that can be used to obtain the next 50 items. Requesting all videos since 2020 allows the dataset to span a timeframe of three years and will allow to analyze toxicity over time as well and will also paint a broader picture of how the F1 fandom developed. After obtaining all video information, the video ids are extracted and safed into a list, which is used later to obtain the actual comment threads.
 
 
 ```python
@@ -118,6 +123,8 @@ while len(video_ids_after_2020) < max_results and "nextPageToken" in videos_afte
         video_ids_after_2020 = video_ids_after_2020 + [item['id']['videoId'] for item in videos_after_2020['items']]
 
 ```
+
+Besides the list of video ids, the data is also parsed into a dataframe. This allows to take general video information such as like count, video title, the overall comment count etc. into consideration for the final analysis.
 
 
 ```python
@@ -143,11 +150,7 @@ videos = pd.DataFrame(df_list)
 videos
 ```
 
-
-```python
-video_ids_after_2020 = videos.video_id.to_list()
-video_ids_after_2020
-```
+Now that all the necessary video information has been obtained, the actual comments and replys can be requested. In order to achieve this, for every video id that has been retrieved earlier, a list of 15 comment threads is requested. Every comment thread consists of a topcomment, that has a number of replys associated with it. Because of the maximum quota of 10000 request units per day, for each video only 15 comments can be obtained, as each comment request costs one unit, for all 500 videos for 15 commenthreads per video, a quota usage of 7500 applies. Now for each retrieved top comment a maximum of 10 replies are requested. The corresponding data, is then parsed into one large dataframe, that contains the comment text as well as administrative information like the video id as well as the comment id and further useful information like the number of likes a comment / reply has or the publishing date. This additional information allows to further reason about the amount of interaction the particular comment got.
 
 
 ```python
@@ -161,7 +164,7 @@ for video_id in video_ids_after_2020:
         videoId=video_id).execute()['items']
     for top_level_comment in top_level_comments:
         replies = youtube_api.comments().list(part="snippet",
-            maxResults=5,
+            maxResults=10,
             parentId=top_level_comment['snippet']['topLevelComment']['id']).execute()['items']
         df_list_comments.append(
         {
@@ -189,6 +192,8 @@ comment_df: pd.DataFrame = pd.DataFrame(df_list_comments)
 comment_df
 ```
 
+Last but not least the dataset is saved into a "pickle" file, which allows efficient storage of dataframes. This is especially useful if the notebook has to be restarted because the dataset doesn't has to be build from scratch and no quota or api access is required to perform analysis on the dataset.
+
 
 ```python
 videos.to_pickle("datasets/video_data.pkl")
@@ -207,6 +212,15 @@ videos
 ```
 
 ### Dataset limitations
+Because of the quoate limit google has set for the youtube api, the dataset is only depicting a small section of the actual circumstances in the Formula 1 fandom. For example, for one video, a maximum of $15*10 = 150$ comments will be retrieved.
+
+
+```python
+videos.comment_count = videos.comment_count.astype(int)
+videos.comment_count.mean()
+```
+
+However, on average a video has 1250 comments. Thus a lot of fan interaction will be missed and is not included in this dataset. In addition to that, the dataset only uses the Youtube API as a source, however Formula 1 fandom spans over multiple platforms, especially Twitter, Instagram and Reddit. Thus it is possible that depending on the plattform toxic user interactions may be more frequent as they are governed differently. Nevertheless the dataset spans over a total of 40200 comments that can be analysed.
 
 ## Dictionary Analysis
 
@@ -229,12 +243,13 @@ set_of_toxic_words
 import numpy as np
 from collections import Counter
 from typing import Tuple
+from nltk import word_tokenize
 
 def dictionary_analysis_over_set_intersection(dict_name: str, dict_set: set, data: pd.DataFrame) -> Tuple[pd.DataFrame, Counter]:
     dict_word_counter: Counter = Counter()
     dict_word_count: list = []
     for row in data.text:
-        dict_words_in_comment: set = set(row.split(" ")).intersection(dict_set)
+        dict_words_in_comment: set = set(word_tokenize(row)).intersection(dict_set)
         dict_word_counter.update(dict_words_in_comment)
         dict_word_count.append(len(dict_words_in_comment))
     data[f"{dict_name}_word_count"] = dict_word_count
@@ -249,15 +264,54 @@ comment_df.loc[comment_df["toxic_word_count"] > 0]
 
 
 ```python
+toxic_word_counter
+```
+
+### Grievance Dictionary
+
+
+```python
+from nltk.stem import PorterStemmer
+from nltk import word_tokenize
+from nltk import TreebankWordDetokenizer
+import swifter
+
+stemmer: PorterStemmer = PorterStemmer()
+detokenizer: TreebankWordDetokenizer = TreebankWordDetokenizer()
+stemmed_comments: pd.DataFrame = comment_df.copy()
+stemmed_comments["text"] = stemmed_comments.text.swifter.apply(lambda text: detokenizer.detokenize([stemmer.stem(word) for word in word_tokenize(text)]))
+stemmed_comments
 
 ```
 
 
 ```python
-toxic_word_counter
+from collections import defaultdict
+from typing import Dict
+
+grievance_dict_df = pd.read_csv("dictionaries/grievancedictionary/dictionary_versions/dictionary_5plus.csv")
+grievance_dict_df.drop(["Unnamed: 0"], axis=1, inplace=True)
+categorys = grievance_dict_df.category.unique()
+categorys
 ```
 
-### Grievance Dictionary
+
+```python
+grievance_set_dictionary: Dict[str, Counter] = defaultdict(Counter)
+for category in categorys:
+    curr_category_set = set(grievance_dict_df.loc[grievance_dict_df.category == category].word.to_list())
+    stemmed_comments, grievance_set_dictionary[category] = dictionary_analysis_over_set_intersection(dict_name=category, dict_set=curr_category_set, data=stemmed_comments)
+stemmed_comments
+```
+
+
+```python
+comment_df = pd.merge(comment_df, stemmed_comments[["id", "deadline_word_count", "desperation_word_count", "fixation_word_count", 'frustration_word_count', 'god_word_count',
+       'grievance_word_count', 'hate_word_count', 'help_word_count', 'honour_word_count', 'impostor_word_count', 'jealousy_word_count',
+       'loneliness_word_count', 'murder_word_count', 'paranoia_word_count', 'planning_word_count', 'relationship_word_count',
+       'soldier_word_count', 'suicide_word_count', 'surveillance_word_count', 'threat_word_count', 'violence_word_count',
+       'weaponry_word_count']], on="id")
+```
 
 ### Ethnic Slurs
 
@@ -301,16 +355,5 @@ import os
 os.system("jupyter nbconvert --to markdown final.ipynb")
 os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs.bib --csl=apa.csl")
 ```
-
-    [NbConvertApp] Converting notebook final.ipynb to markdown
-    [NbConvertApp] Writing 18754 bytes to final.md
-
-
-
-
-
-    0
-
-
 
 -->
