@@ -75,8 +75,13 @@ As a result of the strong connection fans build up to their fan object, the time
 From an economic point of view, fandom and fan cultures are seen as the ideal costumers. They are eager to get their hands on the newest products and they are stable with re-occuring purchases, since intense consumption is considered a part of the fan identity [@arouh_toxic_2020].
 
 ### Defining Toxic Fan behaviour
+In the first place, toxic fandom is a buzzword, that is widely used throughout media to describe or identify fans who engage in behaviors that are considered negative or unaccaptable. This behavior can range from simple negative responses to bullying other members of a fandom or those involved in the creation of the fan object [@toxic_fandom]. Most of this behaviour can be observed online in social media, there are however reports of toxic behaviour in real-life as well, such as abusive behaviour at events.
 
-### Youtube API
+The word toxic itself however is defined as "of relating to, or caused by a toxin," "of the nature of a poison; poisonous" [@arouh_toxic_2020]. This definition originally originates from medival latin, where it refers to poisoned arrows or to being imbued with poison. Following this definition, it is an *external* substance that is toxic and not a person or their behaviour. However in recent years the understanding of this definition has shifted, today someones actions or the emotions experienced or types of character are now understood as poisonous or "toxic" [@arouh_toxic_2020]. This definition is closely related to the definition of the word fan, as explained earlier, fan originates from fanatic, which is traditionally linked to madness and demonic posession. This traditional and long obselete link is often exploited by media outlets to mark fans as psychopaths whose frustrated fantasies of intimate relationships or unsatisfied desires with the fan object take violent and ant-social forms [@arouh_toxic_2020]. In order to maintain this hypothesis, media often picks the most miserable and negative or "click-bait" examples of fan behaviour, as it creates the most attention and keeps the viewing figures high [@arouh_toxic_2020], [@proctor_editors_2018]. These circumstances are additionally amplified by social media plattforms, as they promote toxic behaviour, because it usually creates a lot of interactions. Therefore, it is our overall understanding of what a fan is that marks a him as a toxic "other".
+
+What is also observed, is that "toxic" fans often fall back to racist and mysogenistic behaviour compared with hate speech in order to defend their fan object or view point. This often comes with a feeling of "power loss" for the "toxic fan". Because of that, current social-, ideological- and political conflicts are becoming more and more frequent as a topic in toxic behaviour [@proctor_editors_2018], [@arouh_toxic_2020], [@toxic_fandom]. For some members of the fan communities, this feeling of power loss is amplified by current political circumstances where they feel a feeling of disempowerment at their loss of priviliged status in society because of gender discussions or woman rights movements. Thus toxic fans are often painted as angry white, heterosexual men or members of the "alt-right" community. However in many cases, fan communities are used as a plattform to spread this hatered or ideological ideas because it creates a lot of attention in social networks as well as from the media. The media then progresses to paint fandom and online culture as more and more toxic because it creates "maximum cultural penetration" [@proctor_editors_2018]. This trend has led to the phenomenon of *progressive toxicity*, where other fans "rush to prove one's moral superiority by speaking out against some racist, sexist or otherwise hurtful sentiment, the sentiment is often amplified on a scale that wouldn't have been possible had people not taken the bait" [@proctor_editors_2018]. This rush to prove morally better than the toxic other often leads to toxic behavior by the defender itself. Because of that, toxic practices more and more frequently are instantiations of larger political or cultural polarizations and they depict the current socio-political climate. Thus toxic fan behaviour is often observed as a conlflict between the "political correct" pro-diversity crowd, which are also called social justice warriors (SJWs) and the members of the so-called "alt-right" hell-bent [@proctor_editors_2018].
+
+However toxic fan behaviour is not limited to racist, misogynistic comments that can also include hate-speech. Some toxic fan are even going as far as to writing death or rape threats, doxing people (doxing refers to leaking personal information online) or to show abusive and harassing behaviour in public against other groups [@proctor_editors_2018], [@arouh_toxic_2020].
 
 ## Concept
 
@@ -151,12 +156,12 @@ for video_id in video_ids_after_2020:
     if videos.loc[videos['video_id'] == video_id].comment_count.iloc[0] == 0:
         continue
     top_level_comments = youtube_api.commentThreads().list(part="snippet",
-        maxResults=50,
+        maxResults=15,
         order="relevance",
         videoId=video_id).execute()['items']
     for top_level_comment in top_level_comments:
         replies = youtube_api.comments().list(part="snippet",
-            maxResults=50,
+            maxResults=5,
             parentId=top_level_comment['snippet']['topLevelComment']['id']).execute()['items']
         df_list_comments.append(
         {
@@ -223,18 +228,28 @@ set_of_toxic_words
 ```python
 import numpy as np
 from collections import Counter
-toxic_word_counter: Counter = Counter()
-toxic_word_count: list = []
-for row in comment_df.text:
-    toxic_words_in_comment: set = set(row.split(" ")).intersection(set_of_toxic_words)
-    toxic_word_counter.update(toxic_words_in_comment)
-    toxic_word_count.append(len(toxic_words_in_comment))
-comment_df["toxic_word_count"] = toxic_word_count
+from typing import Tuple
+
+def dictionary_analysis_over_set_intersection(dict_name: str, dict_set: set, data: pd.DataFrame) -> Tuple[pd.DataFrame, Counter]:
+    dict_word_counter: Counter = Counter()
+    dict_word_count: list = []
+    for row in data.text:
+        dict_words_in_comment: set = set(row.split(" ")).intersection(dict_set)
+        dict_word_counter.update(dict_words_in_comment)
+        dict_word_count.append(len(dict_words_in_comment))
+    data[f"{dict_name}_word_count"] = dict_word_count
+    return data, dict_word_counter
 ```
 
 
 ```python
+comment_df, toxic_word_counter = dictionary_analysis_over_set_intersection(dict_name="toxic", dict_set=set_of_toxic_words, data=comment_df)
 comment_df.loc[comment_df["toxic_word_count"] > 0]
+```
+
+
+```python
+
 ```
 
 
@@ -257,7 +272,19 @@ for file in dict_files:
     part = pd.read_csv(os.path.join("dictionaries/ethnic_slurs", file))
     dict_df = pd.concat([part, dict_df])
 dict_df.reset_index(inplace=True, drop=True)
+ethnic_slurs_set: set = set(dict_df.Term.to_list())
 dict_df
+```
+
+
+```python
+comment_df, ethnic_slurs_counter = dictionary_analysis_over_set_intersection(dict_name="ethnic_slurs", dict_set=ethnic_slurs_set, data=comment_df)
+comment_df.loc[comment_df["ethnic_slurs_word_count"] > 0]
+```
+
+
+```python
+ethnic_slurs_counter
 ```
 
 ## Transformer Classifiers
@@ -276,32 +303,13 @@ os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs
 ```
 
     [NbConvertApp] Converting notebook final.ipynb to markdown
-    [NbConvertApp] Writing 61274 bytes to final.md
-    [WARNING] Citeproc: citation FIA not found
-    [WARNING] Citeproc: citation IIIlllIII not found
-    [WARNING] Citeproc: citation Keisuke not found
-    [WARNING] Citeproc: citation Marjan not found
-    [WARNING] Citeproc: citation Miz not found
-    [WARNING] Citeproc: citation Oscar not found
-    [WARNING] Citeproc: citation Rizaldi not found
-    [WARNING] Citeproc: citation Sgt not found
-    [WARNING] Citeproc: citation TheConfidentNoob not found
-    Error producing PDF.
-    ! LaTeX Error: Unicode character 🫢 (U+1FAE2)
-                   not set up for use with LaTeX.
-    
-    See the LaTeX manual or LaTeX Companion for explanation.
-    Type  H <return>  for immediate help.
-     ...                                              
-                                                      
-    l.1137 ...omething Loose Between Seb’s Legs 🫢
-    
+    [NbConvertApp] Writing 18754 bytes to final.md
 
 
 
 
 
-    11008
+    0
 
 
 
