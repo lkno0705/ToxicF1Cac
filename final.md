@@ -17,7 +17,6 @@
         - insults -> [@van_der_vegt_grievance_2021]
     - Transformer classifier
         - sentiment -> cardiffnlp/twitter-roberta-base-sentiment-latest [@tweet_sentiment_classifier]
-        - racism -> jaumefib/datathon-against-racism [@hate_speech_classifier]
         - hate speech -> Hate-speech-CNERG/dehatebert-mono-english [@racism_classifier]
     - statistical analysis
         - group toxic behavior by drivers and teams
@@ -223,23 +222,16 @@ videos.comment_count = videos.comment_count.astype(int)
 videos.comment_count.mean()
 ```
 
-However, on average a video has 1250 comments. Thus a lot of fan interaction will be missed and is not included in this dataset. In addition to that, the dataset only uses the Youtube API as a source, however Formula 1 fandom spans over multiple platforms, especially Twitter, Instagram and Reddit. Thus it is possible that depending on the plattform toxic user interactions may be more frequent as they are governed differently. Nevertheless the dataset spans over a total of 40200 comments that can be analysed.
+However, on average a video has 1250 comments. Thus a lot of fan interaction will be missed and is not included in this dataset. In addition to that, the dataset only uses the Youtube API as a source, however Formula 1 fandom spans over multiple platforms, especially Twitter, Instagram and Reddit. Thus it is possible that depending on the plattform toxic user interactions may be more frequent as they are governed differently. Also, as Formula 1 is an international sport, comments may not be in english, the dataset therefore must be considered multilingual, which can be problematic depending on the methods used. Nevertheless the dataset spans over a total of 40200 comments that can be analysed.
 
 ## Dictionary Analysis
+As the first method to analyze the dataset, a dictionary analysis is performed. For this, the following three different online available dictionaries are used:
 
-### Othrus Lexicon for Toxicity
+- Othrus Lexicon for Toxicity [@orthrus-lexicon_orthrus_2022], to classify toxic texts directly
+- the Grievance Dictionary [@van_der_vegt_grievance_2021], to classify different categories of negative or unacceptable behaviour
+- a dictionary of ethnic slurs based of wikipedia [@ethnic_slurs], to find toxic behaviour based on racism
 
-
-```python
-comment_df
-```
-
-
-```python
-with open("dictionaries/toxic_words.txt") as toxic_words_file:
-    set_of_toxic_words: set = set([word.strip() for word in toxic_words_file.readlines()])
-set_of_toxic_words
-```
+In order to achieve a fast and reusable way of analysing comments with any of the given dictionaries, each dictionary and comment text will be represented as a set. Between those two sets, the set intersection is computed, which contains all words that are found in the dictionary and in the comment text. Thus it essentially checks for word occurence. The number of words from the dictionary is added to the result dataframe. In addition to that, a global counter tracks the number of overall occurences of each dictionary word. This allows for the analysis of language biases or trends in Formula 1 fandom. This method is used for all given dictionaries.
 
 
 ```python
@@ -259,6 +251,18 @@ def dictionary_analysis_over_set_intersection(dict_name: str, dict_set: set, dat
     return data, dict_word_counter
 ```
 
+### Othrus-Lexicon for Toxicity
+The Othrus-Lexicon for Toxicity is a dictionary containing words often used throughout the internet in toxic content [@orthrus-lexicon_orthrus_2022]. It contains about 1900 words that include slurs, insults and common internet abbreviations and obfuscations, such as "sh*t", which are used to bypass automatic content moderation systems. Other then the Github page, nothing else can be found on the internet about this dictionary, therefore nothing is known about creation process or if and how the dictinoary has been validated. Nonetheless it will be used during this thesis to provide additional insights into the toxicity of Formula 1 fandom as it fits the topic perfectly but its results have to be treated with caution.
+
+In order to use the Othrus-Lexicon for Toxicity, the dictionary has to be read from the provided "toxic_words.txt" text file and is then converted into a set. The set conversion will remove duplicates and ensures compatibility with the previously introduced method of set intersection for word occurence, which is used to analyse the dataset.
+
+
+```python
+with open("dictionaries/toxic_words.txt") as toxic_words_file:
+    set_of_toxic_words: set = set([word.strip() for word in toxic_words_file.readlines()])
+set_of_toxic_words
+```
+
 
 ```python
 comment_df, toxic_word_counter = dictionary_analysis_over_set_intersection(dict_name="toxic", dict_set=set_of_toxic_words, data=comment_df)
@@ -271,6 +275,15 @@ toxic_word_counter
 ```
 
 ### Grievance Dictionary
+The Grievance Dictionary proposed by van der Vegt et. al. aims to provide a method to automatically understand language use in the context of grievance-fuelled violence threat assessement [@van_der_vegt_grievance_2021]. It has been created out of informed suggestions from experienced threat assesement practitioners in combination with subsequent humand and computational word list generation. The resulting dictionary includes 20502 words which were annotated by 2318 participants. In its validation process, it was applied to texts written by violent and non-violent individuals. The results showed strong evidence for a high classification performance [@van_der_vegt_grievance_2021].
+
+The dictionary itself is composed of multiple categories which depict different forms of grievance, for example jealousy or threat. Each category includes a number of word stems, annotated with weights, which indicate how important or meaningful the given word is for the category it is included in. There are two version of the dictionary available, one which includes words with weights of five or higher and one which includes words with weights of seven or higher. During this thesis the dictionary with weights higher than five will be used, as it can hypothetically cover more infrequent and domain specific words. The dictionary can support three different approaches to text classification [@van_der_vegt_grievance_2021]:
+
+- **Proportional Scoring**: Proportional scoring or wordcount-based classification, calculates the proportion of grievance fueled words in the given texts. This proportion is then used as a classification measure.
+- **Weight-based**: During this approach, the assigned word weights are used to obtain a weight average for each given text, which is used as the classification measure.
+- **Word inclusion**: Word inclusion checks if and how often the given words from the dictionary are included in the text.
+
+In order to be able to analyse the dataset with the grievance dictionary, all comment texts have to be stemmed. For that, the Porterstemmer, word_tokenize and TreebankWordDetokenizer from the natural language toolkit will be used. First, the comment dataset will be copied, this ensures, that the original texts won't be affected by the applied dictionary specific processing. Then, the text column will be manipulated through the swifter module, which ensures efficient and automatic parrallelization. During manipulation, the text is split up into tokens, then converted to its word stem by the Porterstemmer and detokenized by the TreebankWordDetokenizer. This process essentially converts the original text into the same text sequence but it is composed of word stems instead of the actual words.
 
 
 ```python
@@ -287,6 +300,8 @@ stemmed_comments
 
 ```
 
+After preprocessing the dataset, the grievance dictionary can be loaded. As it is stored in a .csv file, the pandas read_csv function can be used to read the dictionary into memory. However, the csv includes a seperate unnamed index, which needs to be dropped.
+
 
 ```python
 from collections import defaultdict
@@ -298,6 +313,8 @@ categorys = grievance_dict_df.category.unique()
 categorys
 ```
 
+As the dictionary made up of several categories, a set for each dictionary category has to be created in order to ensure compatibility with the dictionary over set intersection function, that was presented earlier. Now for each category, the texts are analyzed using this method. However instead of saving one counter, that counts word occurences, a dictionary which stores each counter for its given category.
+
 
 ```python
 grievance_set_dictionary: Dict[str, Counter] = defaultdict(Counter)
@@ -306,6 +323,8 @@ for category in categorys:
     stemmed_comments, grievance_set_dictionary[category] = dictionary_analysis_over_set_intersection(dict_name=category, dict_set=curr_category_set, data=stemmed_comments)
 stemmed_comments
 ```
+
+Last but not least, the results stored in the stemmed dataset needs to be merged into the original one using the pd.merge function.
 
 
 ```python
@@ -317,6 +336,7 @@ comment_df = pd.merge(comment_df, stemmed_comments[["id", "deadline_word_count",
 ```
 
 ### Ethnic Slurs
+The third dictionary to be used has been created out of a scrape of the wikipedia page for ethnic slurs [@ethnic_slurs]. The page list all known ethnix slurs in alphabetical order, including their targets, meaning and origin. In order to scrape the website, the webbased tool [wikitable2csv](https://wikitable2csv.ggor.de) has been used. This tool allows the conversion of tables on wiki websites into .csv files. As Wikipedia lists every slur in alphabetical order with one table per letter, a total of 26 .csv files are created. Thus, in order to use the dictionary, all .csv files are in the directory are listed and loaded into their own dataframe, which are then concatinated to form one big dictionary of ethnic slurs.
 
 
 ```python
@@ -329,12 +349,14 @@ for file in dict_files:
     part = pd.read_csv(os.path.join("dictionaries/ethnic_slurs", file))
     dict_df = pd.concat([part, dict_df])
 dict_df.reset_index(inplace=True, drop=True)
-ethnic_slurs_set: set = set(dict_df.Term.to_list())
 dict_df
 ```
 
+Now, to be able to reuse the dictionary over set intersection method, the list of terms / slurs in the dictionary are converted into set and then passed onto the method alongside the comment dataset.
+
 
 ```python
+ethnic_slurs_set: set = set(dict_df.Term.to_list())
 comment_df, ethnic_slurs_counter = dictionary_analysis_over_set_intersection(dict_name="ethnic_slurs", dict_set=ethnic_slurs_set, data=comment_df)
 comment_df.loc[comment_df["ethnic_slurs_word_count"] > 0]
 ```
@@ -344,7 +366,141 @@ comment_df.loc[comment_df["ethnic_slurs_word_count"] > 0]
 ethnic_slurs_counter
 ```
 
+After the dataset has been analysed with all three dictionaries, the resulting dataframe, that includes the dictionary word overlap counts per comment, is saved to disk. This allows for efficient reloading without the need of reexecution for the analysis of the acquired data.
+
+
+```python
+comment_df.to_csv("datasets/comment_df_dicts.csv" ,index=False)
+```
+
 ## Transformer Classifiers
+
+
+```python
+from transformers import AutoModelForSequenceClassification, AutoTokenizer, AutoConfig
+import numpy as np
+from scipy.special import softmax
+import swifter
+from bs4 import BeautifulSoup
+
+def preprocess(text):
+    new_text = []
+    text = BeautifulSoup(text, "lxml").text
+    for t in text.split(" "):
+        t = '@user' if t.startswith('@') and len(t) > 1 else t
+        t = 'http' if t.startswith('http') else t
+        new_text.append(t)
+    return " ".join(new_text)
+
+# Delete unreadable comments that result in the models crashing
+comment_df.drop([14603], inplace=True) # comment is full of random characters
+comment_df.drop([27224, 27223], inplace=True) # comment is not in english
+comment_df.reset_index(drop=True)
+
+comment_df_for_transformers = comment_df.copy()
+comment_df_for_transformers["text"] = comment_df_for_transformers.text.swifter.apply(lambda text: preprocess(text))
+comment_df_for_transformers
+```
+
+### Sentiment
+
+
+```python
+from tqdm import tqdm
+
+MODEL = "distilbert-base-uncased-finetuned-sst-2-english"
+config = AutoConfig.from_pretrained(MODEL)
+tokenizer = AutoTokenizer.from_pretrained(MODEL)
+
+model = AutoModelForSequenceClassification.from_pretrained(MODEL)
+
+label_list = []
+score_list = []
+
+for text in tqdm(comment_df_for_transformers.text.to_list()):
+    encoded_input = tokenizer(text, return_tensors='pt', padding=True, truncation=True, max_length=512)
+    output = model(**encoded_input)
+    scores = output[0][0].detach().numpy()
+    scores = softmax(scores)
+    label_list.append(config.id2label[np.argsort(scores)[::-1][0]])
+    score_list.append(max(scores))
+
+comment_df["sentiment"] = label_list
+comment_df["sentiment_score"] = score_list
+comment_df
+```
+
+
+```python
+comment_df.sentiment.hist()
+```
+
+
+
+
+    <AxesSubplot: >
+
+
+
+
+    
+![png](final_files/final_48_1.png)
+    
+
+
+
+```python
+comment_df.to_csv("datasets/comment_df_sentiment_transformer.csv" ,index=False)
+```
+
+### Hate Speech
+
+
+```python
+MODEL = "Hate-speech-CNERG/dehatebert-mono-english"
+tokenizer = AutoTokenizer.from_pretrained(MODEL)
+config = AutoConfig.from_pretrained(MODEL)
+
+model = AutoModelForSequenceClassification.from_pretrained(MODEL)
+
+label_list = []
+score_list = []
+
+for text in tqdm(comment_df_for_transformers.text.to_list()):
+    encoded_input = tokenizer(text, return_tensors='pt', padding=True, truncation=True, max_length=514)
+    output = model(**encoded_input)
+    scores = output[0][0].detach().numpy()
+    scores = softmax(scores)
+    label_list.append(config.id2label[np.argsort(scores)[::-1][0]])
+    score_list.append(max(scores))
+
+comment_df["hate_speech_label"] = label_list
+comment_df["hate_speech_score"] = score_list
+comment_df
+```
+
+
+```python
+comment_df.to_csv("datasets/comment_df_hate_speech_transformer.csv", index=False)
+```
+
+
+```python
+comment_df.hate_speech_label.hist()
+```
+
+
+
+
+    <AxesSubplot: >
+
+
+
+
+    
+![png](final_files/final_53_1.png)
+    
+
 
 ## Results
 
@@ -360,17 +516,16 @@ os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs
 ```
 
     [NbConvertApp] Converting notebook final.ipynb to markdown
-    [NbConvertApp] Writing 25079 bytes to final.md
-    Error producing PDF.
-    ! Undefined control sequence.
-    l.130 compiled with \LATEX
-    
+    [NbConvertApp] Support files will be in final_files/
+    [NbConvertApp] Making directory final_files
+    [NbConvertApp] Making directory final_files
+    [NbConvertApp] Writing 35143 bytes to final.md
 
 
 
 
 
-    11008
+    0
 
 
 
