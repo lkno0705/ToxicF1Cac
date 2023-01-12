@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>final</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<!--
+
+# Final Report - Work in Progress
+- Research Hypothesis / Questions:
+    - Is Formula 1 fandom Toxic?
+    - Are there specific groups that show more toxic behaviour then others?
+    - Is the toxicity a "self-made" problem of Formula 1?
+- APIs: Youtube
+    - (Not reddit as post are often off topic especially during the off season, that we are currently in)
+- Methods:
+    - TBD
+    - Dictionary
+        - Formula 1 specific words that are toxic
+        - racism / ethnic slurs -> [@ethnic_slurs]
+        - toxicity -> [@orthrus-lexicon_orthrus_2022]
+        - hate speech -> [@van_der_vegt_grievance_2021]
+        - insults -> [@van_der_vegt_grievance_2021]
+    - Transformer classifier
+        - sentiment -> cardiffnlp/twitter-roberta-base-sentiment-latest [@tweet_sentiment_classifier]
+        - hate speech -> Hate-speech-CNERG/dehatebert-mono-english [@racism_classifier]
+    - statistical analysis
+        - group toxic behavior by drivers and teams
+        - group by topics
+            - topic modelling?
+- Contents:
+    - Introduction
+        - What is Formula 1
+        - Why do we need to analyze this
+        - introduce the three research questions / hypothesis
+    - Fundamentals
+        - Formula 1
+        - What is fandom
+          - 
+        - Defining toxic fan behavior
+        - Youtube API
+        - Maybe explaining the used methods?
+    - Concept
+        - What will be done
+        - How will i be doing it
+    - Creating the Dataset
+        - Explain Dataset creation
+    - Applying Method 1
+    - Applying Method 2
+    - Results
+
+-->
+<h1
+id="analysing-toxicity-in-formula-1-fandom---computational-analysis-of-communications-final">Analysing
+Toxicity in Formula 1 Fandom - Computational Analysis of Communications
+Final</h1>
+<p>Author: Leon Knorr</p>
+<p>Matr-Nr: 1902854</p>
+<h2 id="disclaimer">Disclaimer</h2>
+<p>In order to use Citations in Jupyter Notebook, the whole Notebook has
+to be converted to markdown and after that, the markdown file has to be
+compiled with LATEX and the bibliography and bibliography style is
+injected. Because of that Citations and the bibliography are only
+visible in the PDF version of the notebook. However because comments
+contain emojis, and other special characters, the output of each code
+cell has to be cleared before the notebook is converted otherwise the
+pdf compile will fail. In addition to that the formating of the code
+cells in the pdf document is not necessarily perfect. As a result,
+Citations and bibliography will only be correctly visible in the PDF
+version, where as code and its output is only visible in the notebook
+source.</p>
+<h2 id="introduction">Introduction</h2>
+<p>Formula 1 is the highest class of international racing for open-wheel
+single-seater formula racing cars and is generally considered the most
+competitive, fastest and hardest class of motor racing. Since it’s first
+season in 1950, Formula 1 is visiting a diverse list of many different
+countries, where the best drivers in the world are racing against each
+other in teams of two drivers to determine the best driver and the best
+team on the Formula 1 grid <span class="citation"
+data-cites="about_f1">(Lowrey, 2019)</span>. These events are visited by
+thousands of Fans, with millions more following them on television and
+social media. With the 2021 season being one of the closest and most
+entertaining seasons in the history of Formula 1, where Red Bulls Max
+Verstappen beat Mercedes driver Lewis Hamilton in the grand finale of
+the season under controversial circumstances after a full season of
+controversy, drama and intense on track battles and with the release of
+Netflix Drive To Survive, Formula 1s popularity is growing rapidly. But,
+reports of Toxic and abusive Fan behavior at events and in comment
+sections on social media are accumulating, and casts an ugly shadow over
+Formula 1s latest successes <span class="citation"
+data-cites="woodhouse_scary_2022">(Woodhouse, 2022)</span>. As the
+reports over toxic and abusive fan behaviours in social media and at
+live events are rising, Formula 1 as well as Fans and drivers are taking
+a stand against toxicity in the Formula 1 community. However, an
+independent and scientific analysis of this topic is missing and
+therefore the accusations are sort of hanging in the air without a solid
+scientific foundation. Therefore, in order to tackle this problem
+research into the toxicity of Formula 1 fandom is a necassety to gain
+valuable insights into understanding the problem, where it originates
+from and to build a foundation for future measures to make attending
+Formula 1 events as well as the media around it a safer and more
+enjoyable experience. To take the first step into this direction, this
+thesis will analyse Youtube comments of the Formula 1 channel in order
+to determine:</p>
+<ul>
+<li>If the Formula 1 fandom is toxic</li>
+<li>Are there specific groups that are more toxic then others?</li>
+<li>Is the toxicity a “self-made” problem of Formula 1 and where is the
+toxicity originating from?</li>
+</ul>
+<h2 id="fundamentals">Fundamentals</h2>
+<p>In this chapter the necessary fundamental knowledge is presented.</p>
+<h3 id="formula-1">Formula 1</h3>
+<p>Formula 1 is the worlds most prestigous motor racing competition, as
+well as the world’s most popular annual sporting series <span
+class="citation" data-cites="about_f1">(Lowrey, 2019)</span>. It marks
+the highest class of international open-wheel single-seater formula
+racing. The first Formula 1 competition was held in 1950, since then the
+competiton for the world drivers championship (wdc) which determines the
+worlds best driver and the world constructors championship (wcc) which
+determines the best team, is held annualy and is sanctioned by the
+Fédération Internationale de l’Automobile (FIA). During the competition
+(also called a season), Formula 1 visits a variety of different
+countries and racing tracks, each event (Grands Prix) is attended by
+thousands of people with millions watching from home <span
+class="citation" data-cites="formula_1_2023">(<span>“Formula
+<span>One</span>,”</span> 2023)</span>. All rights of the Formula 1
+brand and the competition itself is owned by Formula One World
+Championship Limited, which is a corporation, that provides media
+distribution and promotion services, besides that, it controls the
+contracts, distribtution, and commercial management of rights and
+licenses of formula 1 <span class="citation"
+data-cites="formula_1_limited_company_profile">(<em>Formula
+<span>One</span> <span>World</span> <span>Championship</span>
+<span>Ltd</span> - <span>Company</span> <span>Profile</span> and
+<span>News</span> - <span>Bloomberg</span> <span>Markets</span></em>,
+n.d.)</span>. The term Formula 1 is used to describe the corporation, as
+well as the competition, as they can’t exist without each other.</p>
+<h3 id="what-is-fandom">What is Fandom</h3>
+<p>According to Cornel Sandvoss Fandom is a community of people that are
+regularly, consuming a given popular narrative or text with great
+emotional involvement <span class="citation"
+data-cites="toxic_fandom">(<span>“What <span>Is</span>
+<span>Toxic</span> <span>Fandom</span>?”</span> n.d.)</span>. The
+members of the community are called fans, which is a short form of
+“fanatic” <span class="citation" data-cites="arouh_toxic_2020">(Arouh,
+2020)</span>. In other words, a fandom is a community of people that are
+fanatic about a popular narrative or text such as a tv series, movie
+franchise or sports.</p>
+<p>Becoming a fan starts with the adoption of a fan identity about a fan
+object, thus fandom can be a powerful of defining the self. The fan
+object can be anything that people can be fanatic about, this may be a
+simple object such as trains or a virtual asset such as a movie
+franchise. Therefore, by taking part in a fandom, people are expressing
+themselfs through an identity they’ve chosen for themselfs. As a result,
+fans may lead to see the fan object as an extension of themselfs and
+thus react personally threatened if the fan object is facing a threat
+such as accusations etc <span class="citation"
+data-cites="toxic_fandom">(<span>“What <span>Is</span>
+<span>Toxic</span> <span>Fandom</span>?”</span> n.d.)</span>. In
+addition to creating a strong part of their own identity, fans feel more
+connected or socialised through their fandom, as studies indicate, that
+even if fans don’t interact with other members of a fan community, they
+still perceive themselfs as part of that community. Because of that,
+fans not only become personally invested in their fandom, they become
+socially invested as well <span class="citation"
+data-cites="toxic_fandom">(<span>“What <span>Is</span>
+<span>Toxic</span> <span>Fandom</span>?”</span> n.d.)</span>.</p>
+<p>As a result of the strong connection fans build up to their fan
+object, the time-frame in which this self identity has been chosen is
+also playing a role. As an example, many people build a fandom in their
+childhood about a tv series, franchise or sport, this often leads to
+them feeling entitled to having their fan object preserved as they deem
+acceptable. This behaviour is also called fan entitlement. A good
+example for this behaviour are the news movies and series in the Lord of
+the Rings and Star Wars franchises, as most fan communities of these
+franchises have been outraged about the new characters and story lines,
+where many people claimed that this “ruined their childhood” <span
+class="citation" data-cites="toxic_fandom">(<span>“What <span>Is</span>
+<span>Toxic</span> <span>Fandom</span>?”</span> n.d.)</span>.</p>
+<p>From an economic point of view, fandom and fan cultures are seen as
+the ideal costumers. They are eager to get their hands on the newest
+products and they are stable with re-occuring purchases, since intense
+consumption is considered a part of the fan identity <span
+class="citation" data-cites="arouh_toxic_2020">(Arouh, 2020)</span>.</p>
+<h3 id="defining-toxic-fan-behaviour">Defining Toxic Fan behaviour</h3>
+<p>In the first place, toxic fandom is a buzzword, that is widely used
+throughout media to describe or identify fans who engage in behaviors
+that are considered negative or unaccaptable. This behavior can range
+from simple negative responses to bullying other members of a fandom or
+those involved in the creation of the fan object <span class="citation"
+data-cites="toxic_fandom">(<span>“What <span>Is</span>
+<span>Toxic</span> <span>Fandom</span>?”</span> n.d.)</span>. Most of
+this behaviour can be observed online in social media, there are however
+reports of toxic behaviour in real-life as well, such as abusive
+behaviour at events.</p>
+<p>The word toxic itself however is defined as “of relating to, or
+caused by a toxin,” “of the nature of a poison; poisonous” <span
+class="citation" data-cites="arouh_toxic_2020">(Arouh, 2020)</span>.
+This definition originally originates from medival latin, where it
+refers to poisoned arrows or to being imbued with poison. Following this
+definition, it is an <em>external</em> substance that is toxic and not a
+person or their behaviour. However in recent years the understanding of
+this definition has shifted, today someones actions or the emotions
+experienced or types of character are now understood as poisonous or
+“toxic” <span class="citation" data-cites="arouh_toxic_2020">(Arouh,
+2020)</span>. This definition is closely related to the definition of
+the word fan, as explained earlier, fan originates from fanatic, which
+is traditionally linked to madness and demonic posession. This
+traditional and long obselete link is often exploited by media outlets
+to mark fans as psychopaths whose frustrated fantasies of intimate
+relationships or unsatisfied desires with the fan object take violent
+and ant-social forms <span class="citation"
+data-cites="arouh_toxic_2020">(Arouh, 2020)</span>. In order to maintain
+this hypothesis, media often picks the most miserable and negative or
+“click-bait” examples of fan behaviour, as it creates the most attention
+and keeps the viewing figures high <span class="citation"
+data-cites="arouh_toxic_2020">(Arouh, 2020)</span>, <span
+class="citation" data-cites="proctor_editors_2018">(Proctor &amp; Kies,
+2018)</span>. These circumstances are additionally amplified by social
+media plattforms, as they promote toxic behaviour, because it usually
+creates a lot of interactions. Therefore, it is our overall
+understanding of what a fan is that marks a him as a toxic “other”.</p>
+<p>What is also observed, is that “toxic” fans often fall back to racist
+and mysogenistic behaviour compared with hate speech in order to defend
+their fan object or view point. This often comes with a feeling of
+“power loss” for the “toxic fan”. Because of that, current social-,
+ideological- and political conflicts are becoming more and more frequent
+as a topic in toxic behaviour <span class="citation"
+data-cites="proctor_editors_2018">(Proctor &amp; Kies, 2018)</span>,
+<span class="citation" data-cites="arouh_toxic_2020">(Arouh,
+2020)</span>, <span class="citation"
+data-cites="toxic_fandom">(<span>“What <span>Is</span>
+<span>Toxic</span> <span>Fandom</span>?”</span> n.d.)</span>. For some
+members of the fan communities, this feeling of power loss is amplified
+by current political circumstances where they feel a feeling of
+disempowerment at their loss of priviliged status in society because of
+gender discussions or woman rights movements. Thus toxic fans are often
+painted as angry white, heterosexual men or members of the “alt-right”
+community. However in many cases, fan communities are used as a
+plattform to spread this hatered or ideological ideas because it creates
+a lot of attention in social networks as well as from the media. The
+media then progresses to paint fandom and online culture as more and
+more toxic because it creates “maximum cultural penetration” <span
+class="citation" data-cites="proctor_editors_2018">(Proctor &amp; Kies,
+2018)</span>. This trend has led to the phenomenon of <em>progressive
+toxicity</em>, where other fans “rush to prove one’s moral superiority
+by speaking out against some racist, sexist or otherwise hurtful
+sentiment, the sentiment is often amplified on a scale that wouldn’t
+have been possible had people not taken the bait” <span class="citation"
+data-cites="proctor_editors_2018">(Proctor &amp; Kies, 2018)</span>.
+This rush to prove morally better than the toxic other often leads to
+toxic behavior by the defender itself. Because of that, toxic practices
+more and more frequently are instantiations of larger political or
+cultural polarizations and they depict the current socio-political
+climate. Thus toxic fan behaviour is often observed as a conlflict
+between the “political correct” pro-diversity crowd, which are also
+called social justice warriors (SJWs) and the members of the so-called
+“alt-right” hell-bent <span class="citation"
+data-cites="proctor_editors_2018">(Proctor &amp; Kies, 2018)</span>.</p>
+<p>However toxic fan behaviour is not limited to racist, misogynistic
+comments that can also include hate-speech. Some toxic fan are even
+going as far as to writing death or rape threats, doxing people (doxing
+refers to leaking personal information online) or to show abusive and
+harassing behaviour in public against other groups <span
+class="citation" data-cites="proctor_editors_2018">(Proctor &amp; Kies,
+2018)</span>, <span class="citation"
+data-cites="arouh_toxic_2020">(Arouh, 2020)</span>.</p>
+<h2 id="concept">Concept</h2>
+<h2 id="the-dataset">The Dataset</h2>
+<p>The dataset that will be used throughout this thesis consists of
+40200 Comments with replys from 500 youtube videos that were uploaded
+since 2020 of the formula 1 youtube channel. To obtain this data, the
+Youtube API V3 was used.</p>
+<p>First up, the API has to be initialised, for this an api key is
+needed, that has to be stored in a .env file in the same directory as
+the jupyter notebook. This api key is then read in the following code
+cell and the youtube api is initialized through googles official
+googleapiclient library.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dotenv <span class="im">import</span> dotenv_values</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> googleapiclient.discovery</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>api_keys <span class="op">=</span> dotenv_values(<span class="st">&quot;keys.env&quot;</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>api_service_name <span class="op">=</span> <span class="st">&quot;youtube&quot;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>api_version <span class="op">=</span> <span class="st">&quot;v3&quot;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>api_key <span class="op">=</span> api_keys[<span class="st">&quot;YOUTUBE_API_KEY&quot;</span>]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>max_results <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>youtube_api <span class="op">=</span> googleapiclient.discovery.build(api_service_name, api_version, developerKey <span class="op">=</span> api_key)</span></code></pre></div>
+<p>Now request to the Youtube API V3 can be made. Before we can scrape
+comments, the video id of the video that comments want to be obtain from
+is needed. Therefore, data about all videos since 2020 until now are
+requested. However the api will only retrieve 50 items per request, if
+there are more items that fit the search query the response is paged and
+contains a <em>nextPageToken</em>, that can be used to obtain the next
+50 items. Requesting all videos since 2020 allows the dataset to span a
+timeframe of three years and will allow to analyze toxicity over time as
+well and will also paint a broader picture of how the F1 fandom
+developed. After obtaining all video information, the video ids are
+extracted and safed into a list, which is used later to obtain the
+actual comment threads.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Formula1_official_channel <span class="op">=</span> youtube_api.channels().<span class="bu">list</span>(part<span class="op">=</span><span class="st">&#39;snippet&#39;</span> ,forUsername<span class="op">=</span><span class="st">&#39;Formula1&#39;</span>).execute()[<span class="st">&#39;items&#39;</span>][<span class="dv">0</span>]</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>videos_after_2020 <span class="op">=</span> youtube_api.search().<span class="bu">list</span>(channelId<span class="op">=</span>Formula1_official_channel[<span class="st">&quot;id&quot;</span>],</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        maxResults<span class="op">=</span>max_results,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        publishedAfter<span class="op">=</span><span class="st">&quot;2020-01-01T00:00:00Z&quot;</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        part<span class="op">=</span><span class="st">&#39;id&#39;</span>).execute()</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>video_ids_after_2020 <span class="op">=</span> [item[<span class="st">&#39;id&#39;</span>][<span class="st">&#39;videoId&#39;</span>] <span class="cf">for</span> item <span class="kw">in</span> videos_after_2020[<span class="st">&#39;items&#39;</span>]]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">len</span>(video_ids_after_2020) <span class="op">&lt;</span> max_results <span class="kw">and</span> <span class="st">&quot;nextPageToken&quot;</span> <span class="kw">in</span> videos_after_2020.keys():</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        videos_after_2020 <span class="op">=</span> youtube_api.search().<span class="bu">list</span>(channelId<span class="op">=</span>Formula1_official_channel[<span class="st">&quot;id&quot;</span>],</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        maxResults<span class="op">=</span>max_results,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        publishedAfter<span class="op">=</span><span class="st">&quot;2020-01-01T00:00:00Z&quot;</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        part<span class="op">=</span><span class="st">&#39;id&#39;</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        pageToken<span class="op">=</span>videos_after_2020[<span class="st">&quot;nextPageToken&quot;</span>]).execute()</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        video_ids_after_2020 <span class="op">=</span> video_ids_after_2020 <span class="op">+</span> [item[<span class="st">&#39;id&#39;</span>][<span class="st">&#39;videoId&#39;</span>] <span class="cf">for</span> item <span class="kw">in</span> videos_after_2020[<span class="st">&#39;items&#39;</span>]]</span></code></pre></div>
+<p>Besides the list of video ids, the data is also parsed into a
+dataframe. This allows to take general video information such as like
+count, video title, the overall comment count etc. into consideration
+for the final analysis.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df_list <span class="op">=</span> []</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> video_id <span class="kw">in</span> video_ids_after_2020:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    video_data <span class="op">=</span> youtube_api.videos().<span class="bu">list</span>(part<span class="op">=</span><span class="st">&#39;snippet, statistics&#39;</span>, <span class="bu">id</span><span class="op">=</span>video_id).execute()</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    snippet <span class="op">=</span> video_data[<span class="st">&#39;items&#39;</span>][<span class="dv">0</span>][<span class="st">&#39;snippet&#39;</span>]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    statistics <span class="op">=</span> video_data[<span class="st">&#39;items&#39;</span>][<span class="dv">0</span>][<span class="st">&#39;statistics&#39;</span>]</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    df_list.append(</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;video_id&quot;</span>:video_id,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;title&quot;</span>: snippet[<span class="st">&#39;title&#39;</span>],</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;description&quot;</span>: snippet[<span class="st">&#39;description&#39;</span>],</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;channel&quot;</span>: snippet[<span class="st">&#39;channelTitle&#39;</span>],</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;published_at&quot;</span>: snippet[<span class="st">&#39;publishedAt&#39;</span>],</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;tags&quot;</span>: snippet[<span class="st">&#39;tags&#39;</span>] <span class="cf">if</span> <span class="st">&quot;tags&quot;</span> <span class="kw">in</span> snippet.keys() <span class="cf">else</span> <span class="va">None</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;like_count&quot;</span>: statistics[<span class="st">&#39;likeCount&#39;</span>],</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;favorite_count&quot;</span>: statistics[<span class="st">&#39;favoriteCount&#39;</span>],</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;comment_count&quot;</span>: statistics[<span class="st">&#39;commentCount&#39;</span>] <span class="cf">if</span> <span class="st">&quot;commentCount&quot;</span> <span class="kw">in</span> statistics.keys() <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>videos <span class="op">=</span> pd.DataFrame(df_list)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>videos</span></code></pre></div>
+<p>Now that all the necessary video information has been obtained, the
+actual comments and replys can be requested. In order to achieve this,
+for every video id that has been retrieved earlier, a list of 15 comment
+threads is requested. Every comment thread consists of a topcomment,
+that has a number of replys associated with it. Because of the maximum
+quota of 10000 request units per day, for each video only 15 comments
+can be obtained, as each comment request costs one unit, for all 500
+videos for 15 commenthreads per video, a quota usage of 7500 applies.
+Now for each retrieved top comment a maximum of 10 replies are
+requested. The corresponding data, is then parsed into one large
+dataframe, that contains the comment text as well as administrative
+information like the video id as well as the comment id and further
+useful information like the number of likes a comment / reply has or the
+publishing date. This additional information allows to further reason
+about the amount of interaction the particular comment got.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df_list_comments <span class="op">=</span> []</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> video_id <span class="kw">in</span> video_ids_after_2020:</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> videos.loc[videos[<span class="st">&#39;video_id&#39;</span>] <span class="op">==</span> video_id].comment_count.iloc[<span class="dv">0</span>] <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    top_level_comments <span class="op">=</span> youtube_api.commentThreads().<span class="bu">list</span>(part<span class="op">=</span><span class="st">&quot;snippet&quot;</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        maxResults<span class="op">=</span><span class="dv">15</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        order<span class="op">=</span><span class="st">&quot;relevance&quot;</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        videoId<span class="op">=</span>video_id).execute()[<span class="st">&#39;items&#39;</span>]</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> top_level_comment <span class="kw">in</span> top_level_comments:</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        replies <span class="op">=</span> youtube_api.comments().<span class="bu">list</span>(part<span class="op">=</span><span class="st">&quot;snippet&quot;</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            maxResults<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>            parentId<span class="op">=</span>top_level_comment[<span class="st">&#39;snippet&#39;</span>][<span class="st">&#39;topLevelComment&#39;</span>][<span class="st">&#39;id&#39;</span>]).execute()[<span class="st">&#39;items&#39;</span>]</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        df_list_comments.append(</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;video_id&quot;</span>: video_id,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;id&quot;</span>: top_level_comment[<span class="st">&#39;snippet&#39;</span>][<span class="st">&#39;topLevelComment&#39;</span>][<span class="st">&#39;id&#39;</span>],</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;text&quot;</span>: top_level_comment[<span class="st">&#39;snippet&#39;</span>][<span class="st">&#39;topLevelComment&#39;</span>][<span class="st">&#39;snippet&#39;</span>][<span class="st">&#39;textDisplay&#39;</span>],</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;user&quot;</span>: top_level_comment[<span class="st">&#39;snippet&#39;</span>][<span class="st">&#39;topLevelComment&#39;</span>][<span class="st">&#39;snippet&#39;</span>][<span class="st">&#39;authorChannelId&#39;</span>][<span class="st">&#39;value&#39;</span>],</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;like_count&quot;</span>: top_level_comment[<span class="st">&#39;snippet&#39;</span>][<span class="st">&#39;topLevelComment&#39;</span>][<span class="st">&#39;snippet&#39;</span>][<span class="st">&#39;likeCount&#39;</span>],</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;published_at&quot;</span>: top_level_comment[<span class="st">&#39;snippet&#39;</span>][<span class="st">&#39;topLevelComment&#39;</span>][<span class="st">&#39;snippet&#39;</span>][<span class="st">&#39;publishedAt&#39;</span>],</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;reply_count&quot;</span>: top_level_comment[<span class="st">&#39;snippet&#39;</span>][<span class="st">&#39;totalReplyCount&#39;</span>]</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        })</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> reply <span class="kw">in</span> replies:</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>            df_list_comments.append(</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>            {</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;video_id&quot;</span>: video_id,</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;id&quot;</span>: reply[<span class="st">&#39;id&#39;</span>],</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;text&quot;</span>: reply[<span class="st">&#39;snippet&#39;</span>][<span class="st">&#39;textDisplay&#39;</span>],</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;user&quot;</span>: reply[<span class="st">&#39;snippet&#39;</span>][<span class="st">&#39;authorChannelId&#39;</span>][<span class="st">&#39;value&#39;</span>],</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;like_count&quot;</span>: reply[<span class="st">&#39;snippet&#39;</span>][<span class="st">&#39;likeCount&#39;</span>],</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;published_at&quot;</span>: reply[<span class="st">&#39;snippet&#39;</span>][<span class="st">&#39;publishedAt&#39;</span>],</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;reply_count&quot;</span>: <span class="dv">0</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>            })</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>comment_df: pd.DataFrame <span class="op">=</span> pd.DataFrame(df_list_comments)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>comment_df</span></code></pre></div>
+<p>Last but not least the dataset is saved into a “pickle” file, which
+allows efficient storage of dataframes. This is especially useful if the
+notebook has to be restarted because the dataset doesn’t has to be build
+from scratch and no quota or api access is required to perform analysis
+on the dataset.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>videos.to_pickle(<span class="st">&quot;datasets/video_data.pkl&quot;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>comment_df.to_pickle(<span class="st">&quot;datasets/comment_data.pkl&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>videos: pd.DataFrame <span class="op">=</span> pd.read_pickle(<span class="st">&quot;datasets/video_data.pkl&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>comment_df: pd.DataFrame <span class="op">=</span> pd.read_pickle(<span class="st">&quot;datasets/comment_data.pkl&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>videos</span></code></pre></div>
+<h3 id="dataset-limitations">Dataset limitations</h3>
+<p>Because of the quoate limit google has set for the youtube api, the
+dataset is only depicting a small section of the actual circumstances in
+the Formula 1 fandom. For example, for one video, a maximum of <span
+class="math inline">15 * 10 = 150</span> comments will be retrieved.</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>videos.comment_count <span class="op">=</span> videos.comment_count.astype(<span class="bu">int</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>videos.comment_count.mean()</span></code></pre></div>
+<p>However, on average a video has 1250 comments. Thus a lot of fan
+interaction will be missed and is not included in this dataset. In
+addition to that, the dataset only uses the Youtube API as a source,
+however Formula 1 fandom spans over multiple platforms, especially
+Twitter, Instagram and Reddit. Thus it is possible that depending on the
+plattform toxic user interactions may be more frequent as they are
+governed differently. Also, as Formula 1 is an international sport,
+comments may not be in english, the dataset therefore must be considered
+multilingual, which can be problematic depending on the methods used.
+Nevertheless the dataset spans over a total of 40200 comments that can
+be analysed.</p>
+<h2 id="dictionary-analysis">Dictionary Analysis</h2>
+<p>As the first method to analyze the dataset, a dictionary analysis is
+performed. For this, the following three different online available
+dictionaries are used:</p>
+<ul>
+<li>Othrus Lexicon for Toxicity <span class="citation"
+data-cites="orthrus-lexicon_orthrus_2022">(Orthrus-Lexicon,
+2022)</span>, to classify toxic texts directly</li>
+<li>the Grievance Dictionary <span class="citation"
+data-cites="van_der_vegt_grievance_2021">(Vegt et al., 2021)</span>, to
+classify different categories of negative or unacceptable behaviour</li>
+<li>a dictionary of ethnic slurs based of wikipedia <span
+class="citation" data-cites="ethnic_slurs">(<span>“List of Ethnic
+Slurs,”</span> 2023)</span>, to find toxic behaviour based on
+racism</li>
+</ul>
+<p>In order to achieve a fast and reusable way of analysing comments
+with any of the given dictionaries, each dictionary and comment text
+will be represented as a set. Between those two sets, the set
+intersection is computed, which contains all words that are found in the
+dictionary and in the comment text. Thus it essentially checks for word
+occurence. The number of words from the dictionary is added to the
+result dataframe. In addition to that, a global counter tracks the
+number of overall occurences of each dictionary word. This allows for
+the analysis of language biases or trends in Formula 1 fandom. This
+method is used for all given dictionaries.</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Tuple</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk <span class="im">import</span> word_tokenize</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dictionary_analysis_over_set_intersection(dict_name: <span class="bu">str</span>, dict_set: <span class="bu">set</span>, data: pd.DataFrame) <span class="op">-&gt;</span> Tuple[pd.DataFrame, Counter]:</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    dict_word_counter: Counter <span class="op">=</span> Counter()</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    dict_word_count: <span class="bu">list</span> <span class="op">=</span> []</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> row <span class="kw">in</span> data.text:</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        dict_words_in_comment: <span class="bu">set</span> <span class="op">=</span> <span class="bu">set</span>(word_tokenize(row)).intersection(dict_set)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        dict_word_counter.update(dict_words_in_comment)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        dict_word_count.append(<span class="bu">len</span>(dict_words_in_comment))</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    data[<span class="ss">f&quot;</span><span class="sc">{</span>dict_name<span class="sc">}</span><span class="ss">_word_count&quot;</span>] <span class="op">=</span> dict_word_count</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> data, dict_word_counter</span></code></pre></div>
+<h3 id="othrus-lexicon-for-toxicity">Othrus-Lexicon for Toxicity</h3>
+<p>The Othrus-Lexicon for Toxicity is a dictionary containing words
+often used throughout the internet in toxic content <span
+class="citation"
+data-cites="orthrus-lexicon_orthrus_2022">(Orthrus-Lexicon,
+2022)</span>. It contains about 1900 words that include slurs, insults
+and common internet abbreviations and obfuscations, such as “sh*t”,
+which are used to bypass automatic content moderation systems. Other
+then the Github page, nothing else can be found on the internet about
+this dictionary, therefore nothing is known about creation process or if
+and how the dictinoary has been validated. Nonetheless it will be used
+during this thesis to provide additional insights into the toxicity of
+Formula 1 fandom as it fits the topic perfectly but its results have to
+be treated with caution.</p>
+<p>In order to use the Othrus-Lexicon for Toxicity, the dictionary has
+to be read from the provided “toxic_words.txt” text file and is then
+converted into a set. The set conversion will remove duplicates and
+ensures compatibility with the previously introduced method of set
+intersection for word occurence, which is used to analyse the
+dataset.</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;dictionaries/toxic_words.txt&quot;</span>) <span class="im">as</span> toxic_words_file:</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    set_of_toxic_words: <span class="bu">set</span> <span class="op">=</span> <span class="bu">set</span>([word.strip() <span class="cf">for</span> word <span class="kw">in</span> toxic_words_file.readlines()])</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>set_of_toxic_words</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>comment_df, toxic_word_counter <span class="op">=</span> dictionary_analysis_over_set_intersection(dict_name<span class="op">=</span><span class="st">&quot;toxic&quot;</span>, dict_set<span class="op">=</span>set_of_toxic_words, data<span class="op">=</span>comment_df)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>comment_df.loc[comment_df[<span class="st">&quot;toxic_word_count&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>toxic_word_counter</span></code></pre></div>
+<h3 id="grievance-dictionary">Grievance Dictionary</h3>
+<p>The Grievance Dictionary proposed by van der Vegt et. al. aims to
+provide a method to automatically understand language use in the context
+of grievance-fuelled violence threat assessement <span class="citation"
+data-cites="van_der_vegt_grievance_2021">(Vegt et al., 2021)</span>. It
+has been created out of informed suggestions from experienced threat
+assesement practitioners in combination with subsequent humand and
+computational word list generation. The resulting dictionary includes
+20502 words which were annotated by 2318 participants. In its validation
+process, it was applied to texts written by violent and non-violent
+individuals. The results showed strong evidence for a high
+classification performance <span class="citation"
+data-cites="van_der_vegt_grievance_2021">(Vegt et al., 2021)</span>.</p>
+<p>The dictionary itself is composed of multiple categories which depict
+different forms of grievance, for example jealousy or threat. Each
+category includes a number of word stems, annotated with weights, which
+indicate how important or meaningful the given word is for the category
+it is included in. There are two version of the dictionary available,
+one which includes words with weights of five or higher and one which
+includes words with weights of seven or higher. During this thesis the
+dictionary with weights higher than five will be used, as it can
+hypothetically cover more infrequent and domain specific words. The
+dictionary can support three different approaches to text classification
+<span class="citation" data-cites="van_der_vegt_grievance_2021">(Vegt et
+al., 2021)</span>:</p>
+<ul>
+<li><strong>Proportional Scoring</strong>: Proportional scoring or
+wordcount-based classification, calculates the proportion of grievance
+fueled words in the given texts. This proportion is then used as a
+classification measure.</li>
+<li><strong>Weight-based</strong>: During this approach, the assigned
+word weights are used to obtain a weight average for each given text,
+which is used as the classification measure.</li>
+<li><strong>Word inclusion</strong>: Word inclusion checks if and how
+often the given words from the dictionary are included in the text.</li>
+</ul>
+<p>In order to be able to analyse the dataset with the grievance
+dictionary, all comment texts have to be stemmed. For that, the
+Porterstemmer, word_tokenize and TreebankWordDetokenizer from the
+natural language toolkit will be used. First, the comment dataset will
+be copied, this ensures, that the original texts won’t be affected by
+the applied dictionary specific processing. Then, the text column will
+be manipulated through the swifter module, which ensures efficient and
+automatic parrallelization. During manipulation, the text is split up
+into tokens, then converted to its word stem by the Porterstemmer and
+detokenized by the TreebankWordDetokenizer. This process essentially
+converts the original text into the same text sequence but it is
+composed of word stems instead of the actual words.</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.stem <span class="im">import</span> PorterStemmer</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk <span class="im">import</span> word_tokenize</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk <span class="im">import</span> TreebankWordDetokenizer</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> swifter</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>stemmer: PorterStemmer <span class="op">=</span> PorterStemmer()</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>detokenizer: TreebankWordDetokenizer <span class="op">=</span> TreebankWordDetokenizer()</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>stemmed_comments: pd.DataFrame <span class="op">=</span> comment_df.copy()</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>stemmed_comments[<span class="st">&quot;text&quot;</span>] <span class="op">=</span> stemmed_comments.text.swifter.<span class="bu">apply</span>(<span class="kw">lambda</span> text: detokenizer.detokenize([stemmer.stem(word) <span class="cf">for</span> word <span class="kw">in</span> word_tokenize(text)]))</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>stemmed_comments</span></code></pre></div>
+<p>After preprocessing the dataset, the grievance dictionary can be
+loaded. As it is stored in a .csv file, the pandas read_csv function can
+be used to read the dictionary into memory. However, the csv includes a
+seperate unnamed index, which needs to be dropped.</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Dict</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>grievance_dict_df <span class="op">=</span> pd.read_csv(<span class="st">&quot;dictionaries/grievancedictionary/dictionary_versions/dictionary_5plus.csv&quot;</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>grievance_dict_df.drop([<span class="st">&quot;Unnamed: 0&quot;</span>], axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>categorys <span class="op">=</span> grievance_dict_df.category.unique()</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>categorys</span></code></pre></div>
+<p>As the dictionary made up of several categories, a set for each
+dictionary category has to be created in order to ensure compatibility
+with the dictionary over set intersection function, that was presented
+earlier. Now for each category, the texts are analyzed using this
+method. However instead of saving one counter, that counts word
+occurences, a dictionary which stores each counter for its given
+category.</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>grievance_set_dictionary: Dict[<span class="bu">str</span>, Counter] <span class="op">=</span> defaultdict(Counter)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> category <span class="kw">in</span> categorys:</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    curr_category_set <span class="op">=</span> <span class="bu">set</span>(grievance_dict_df.loc[grievance_dict_df.category <span class="op">==</span> category].word.to_list())</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    stemmed_comments, grievance_set_dictionary[category] <span class="op">=</span> dictionary_analysis_over_set_intersection(dict_name<span class="op">=</span>category, dict_set<span class="op">=</span>curr_category_set, data<span class="op">=</span>stemmed_comments)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>stemmed_comments</span></code></pre></div>
+<p>Last but not least, the results stored in the stemmed dataset needs
+to be merged into the original one using the pd.merge function.</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>comment_df <span class="op">=</span> pd.merge(comment_df, stemmed_comments[[<span class="st">&quot;id&quot;</span>, <span class="st">&quot;deadline_word_count&quot;</span>, <span class="st">&quot;desperation_word_count&quot;</span>, <span class="st">&quot;fixation_word_count&quot;</span>, <span class="st">&#39;frustration_word_count&#39;</span>, <span class="st">&#39;god_word_count&#39;</span>,</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;grievance_word_count&#39;</span>, <span class="st">&#39;hate_word_count&#39;</span>, <span class="st">&#39;help_word_count&#39;</span>, <span class="st">&#39;honour_word_count&#39;</span>, <span class="st">&#39;impostor_word_count&#39;</span>, <span class="st">&#39;jealousy_word_count&#39;</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;loneliness_word_count&#39;</span>, <span class="st">&#39;murder_word_count&#39;</span>, <span class="st">&#39;paranoia_word_count&#39;</span>, <span class="st">&#39;planning_word_count&#39;</span>, <span class="st">&#39;relationship_word_count&#39;</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;soldier_word_count&#39;</span>, <span class="st">&#39;suicide_word_count&#39;</span>, <span class="st">&#39;surveillance_word_count&#39;</span>, <span class="st">&#39;threat_word_count&#39;</span>, <span class="st">&#39;violence_word_count&#39;</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;weaponry_word_count&#39;</span>]], on<span class="op">=</span><span class="st">&quot;id&quot;</span>)</span></code></pre></div>
+<h3 id="ethnic-slurs">Ethnic Slurs</h3>
+<p>The third dictionary to be used has been created out of a scrape of
+the wikipedia page for ethnic slurs <span class="citation"
+data-cites="ethnic_slurs">(<span>“List of Ethnic Slurs,”</span>
+2023)</span>. The page list all known ethnix slurs in alphabetical
+order, including their targets, meaning and origin. In order to scrape
+the website, the webbased tool <a
+href="https://wikitable2csv.ggor.de">wikitable2csv</a> has been used.
+This tool allows the conversion of tables on wiki websites into .csv
+files. As Wikipedia lists every slur in alphabetical order with one
+table per letter, a total of 26 .csv files are created. Thus, in order
+to use the dictionary, all .csv files are in the directory are listed
+and loaded into their own dataframe, which are then concatinated to form
+one big dictionary of ethnic slurs.</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> os <span class="im">import</span> listdir</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os.path</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>dict_files: <span class="bu">list</span> <span class="op">=</span> <span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> f: f[<span class="op">-</span><span class="dv">4</span>:] <span class="op">==</span> <span class="st">&quot;.csv&quot;</span> ,listdir(<span class="st">&quot;dictionaries/ethnic_slurs/&quot;</span>)))</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>dict_df: pd.DataFrame <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="bu">file</span> <span class="kw">in</span> dict_files:</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    part <span class="op">=</span> pd.read_csv(os.path.join(<span class="st">&quot;dictionaries/ethnic_slurs&quot;</span>, <span class="bu">file</span>))</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    dict_df <span class="op">=</span> pd.concat([part, dict_df])</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>dict_df.reset_index(inplace<span class="op">=</span><span class="va">True</span>, drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>dict_df</span></code></pre></div>
+<p>Now, to be able to reuse the dictionary over set intersection method,
+the list of terms / slurs in the dictionary are converted into set and
+then passed onto the method alongside the comment dataset.</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ethnic_slurs_set: <span class="bu">set</span> <span class="op">=</span> <span class="bu">set</span>(dict_df.Term.to_list())</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>comment_df, ethnic_slurs_counter <span class="op">=</span> dictionary_analysis_over_set_intersection(dict_name<span class="op">=</span><span class="st">&quot;ethnic_slurs&quot;</span>, dict_set<span class="op">=</span>ethnic_slurs_set, data<span class="op">=</span>comment_df)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>comment_df.loc[comment_df[<span class="st">&quot;ethnic_slurs_word_count&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ethnic_slurs_counter</span></code></pre></div>
+<p>After the dataset has been analysed with all three dictionaries, the
+resulting dataframe, that includes the dictionary word overlap counts
+per comment, is saved to disk. This allows for efficient reloading
+without the need of reexecution for the analysis of the acquired
+data.</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>comment_df.to_csv(<span class="st">&quot;datasets/comment_df_dicts.csv&quot;</span> ,index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div>
+<h2 id="transformer-classifiers">Transformer Classifiers</h2>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoModelForSequenceClassification, AutoTokenizer, AutoConfig</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.special <span class="im">import</span> softmax</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> swifter</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bs4 <span class="im">import</span> BeautifulSoup</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess(text):</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    new_text <span class="op">=</span> []</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> BeautifulSoup(text, <span class="st">&quot;lxml&quot;</span>).text</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> text.split(<span class="st">&quot; &quot;</span>):</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        t <span class="op">=</span> <span class="st">&#39;@user&#39;</span> <span class="cf">if</span> t.startswith(<span class="st">&#39;@&#39;</span>) <span class="kw">and</span> <span class="bu">len</span>(t) <span class="op">&gt;</span> <span class="dv">1</span> <span class="cf">else</span> t</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>        t <span class="op">=</span> <span class="st">&#39;http&#39;</span> <span class="cf">if</span> t.startswith(<span class="st">&#39;http&#39;</span>) <span class="cf">else</span> t</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>        new_text.append(t)</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">&quot; &quot;</span>.join(new_text)</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Delete unreadable comments that result in the models crashing</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>comment_df.drop([<span class="dv">14603</span>], inplace<span class="op">=</span><span class="va">True</span>) <span class="co"># comment is full of random characters</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>comment_df.drop([<span class="dv">27224</span>, <span class="dv">27223</span>], inplace<span class="op">=</span><span class="va">True</span>) <span class="co"># comment is not in english</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>comment_df.reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>comment_df_for_transformers <span class="op">=</span> comment_df.copy()</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>comment_df_for_transformers[<span class="st">&quot;text&quot;</span>] <span class="op">=</span> comment_df_for_transformers.text.swifter.<span class="bu">apply</span>(<span class="kw">lambda</span> text: preprocess(text))</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>comment_df_for_transformers</span></code></pre></div>
+<h3 id="sentiment">Sentiment</h3>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>MODEL <span class="op">=</span> <span class="st">&quot;distilbert-base-uncased-finetuned-sst-2-english&quot;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>config <span class="op">=</span> AutoConfig.from_pretrained(MODEL)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(MODEL)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForSequenceClassification.from_pretrained(MODEL)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>label_list <span class="op">=</span> []</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>score_list <span class="op">=</span> []</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> tqdm(comment_df_for_transformers.text.to_list()):</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    encoded_input <span class="op">=</span> tokenizer(text, return_tensors<span class="op">=</span><span class="st">&#39;pt&#39;</span>, padding<span class="op">=</span><span class="va">True</span>, truncation<span class="op">=</span><span class="va">True</span>, max_length<span class="op">=</span><span class="dv">512</span>)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> model(<span class="op">**</span>encoded_input)</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> output[<span class="dv">0</span>][<span class="dv">0</span>].detach().numpy()</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> softmax(scores)</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    label_list.append(config.id2label[np.argsort(scores)[::<span class="op">-</span><span class="dv">1</span>][<span class="dv">0</span>]])</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    score_list.append(<span class="bu">max</span>(scores))</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>comment_df[<span class="st">&quot;sentiment&quot;</span>] <span class="op">=</span> label_list</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>comment_df[<span class="st">&quot;sentiment_score&quot;</span>] <span class="op">=</span> score_list</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>comment_df</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>comment_df.sentiment.hist()</span></code></pre></div>
+<pre><code>&lt;AxesSubplot: &gt;</code></pre>
+<figure>
+<img src="final_files/final_48_1.png" alt="png" />
+<figcaption aria-hidden="true">png</figcaption>
+</figure>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>comment_df.to_csv(<span class="st">&quot;datasets/comment_df_sentiment_transformer.csv&quot;</span> ,index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div>
+<h3 id="hate-speech">Hate Speech</h3>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>MODEL <span class="op">=</span> <span class="st">&quot;Hate-speech-CNERG/dehatebert-mono-english&quot;</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(MODEL)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>config <span class="op">=</span> AutoConfig.from_pretrained(MODEL)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForSequenceClassification.from_pretrained(MODEL)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>label_list <span class="op">=</span> []</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>score_list <span class="op">=</span> []</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> tqdm(comment_df_for_transformers.text.to_list()):</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    encoded_input <span class="op">=</span> tokenizer(text, return_tensors<span class="op">=</span><span class="st">&#39;pt&#39;</span>, padding<span class="op">=</span><span class="va">True</span>, truncation<span class="op">=</span><span class="va">True</span>, max_length<span class="op">=</span><span class="dv">514</span>)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> model(<span class="op">**</span>encoded_input)</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> output[<span class="dv">0</span>][<span class="dv">0</span>].detach().numpy()</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> softmax(scores)</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    label_list.append(config.id2label[np.argsort(scores)[::<span class="op">-</span><span class="dv">1</span>][<span class="dv">0</span>]])</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    score_list.append(<span class="bu">max</span>(scores))</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>comment_df[<span class="st">&quot;hate_speech_label&quot;</span>] <span class="op">=</span> label_list</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>comment_df[<span class="st">&quot;hate_speech_score&quot;</span>] <span class="op">=</span> score_list</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>comment_df</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>comment_df.to_csv(<span class="st">&quot;datasets/comment_df_hate_speech_transformer.csv&quot;</span>, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>comment_df.hate_speech_label.hist()</span></code></pre></div>
+<pre><code>&lt;AxesSubplot: &gt;</code></pre>
+<figure>
+<img src="final_files/final_53_1.png" alt="png" />
+<figcaption aria-hidden="true">png</figcaption>
+</figure>
+<h2 id="results">Results</h2>
+<h2 id="bibliography">Bibliography</h2>
+<!--
+
+
+```python
+import os
+os.system("jupyter nbconvert --to markdown final.ipynb")
+os.system("pandoc -s final.md -t html -o final.html --citeproc --bibliography=refs.bib --csl=apa.csl")
+os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs.bib --csl=apa.csl")
+```
+
+    [NbConvertApp] Converting notebook final.ipynb to markdown
+    [NbConvertApp] Support files will be in final_files/
+    [NbConvertApp] Making directory final_files
+    [NbConvertApp] Making directory final_files
+    [NbConvertApp] Writing 35156 bytes to final.md
+    [WARNING] This document format requires a nonempty <title> element.
+      Defaulting to 'final' as the title.
+      To specify a title, use 'title' in metadata or --metadata title="...".
+
+
+
+
+
+    0
+
+
+
+-->
+<div id="refs" class="references csl-bib-body hanging-indent"
+data-line-spacing="2" role="doc-bibliography">
+<div id="ref-arouh_toxic_2020" class="csl-entry" role="doc-biblioentry">
+Arouh, M. (2020). Toxic <span>Fans</span>: <span>Distinctions</span> and
+<span>Ambivalence</span>. <em>Ex-Centric Narratives: Journal of
+Anglophone Literature, Culture and Media</em>, <em>4</em>, 67–82. <a
+href="https://doi.org/10.26262/exna.v0i4.7917">https://doi.org/10.26262/exna.v0i4.7917</a>
+</div>
+<div id="ref-formula_1_2023" class="csl-entry" role="doc-biblioentry">
+Formula <span>One</span>. (2023). In <em>Wikipedia</em>. <a
+href="https://en.wikipedia.org/w/index.php?title=Formula_One&amp;oldid=1132488425">https://en.wikipedia.org/w/index.php?title=Formula_One&amp;oldid=1132488425</a>
+</div>
+<div id="ref-formula_1_limited_company_profile" class="csl-entry"
+role="doc-biblioentry">
+<em>Formula <span>One</span> <span>World</span>
+<span>Championship</span> <span>Ltd</span> - <span>Company</span>
+<span>Profile</span> and <span>News</span> - <span>Bloomberg</span>
+<span>Markets</span></em>. (n.d.). Retrieved January 9, 2023, from <a
+href="https://www.bloomberg.com/profile/company/1935454Z:LN">https://www.bloomberg.com/profile/company/1935454Z:LN</a>
+</div>
+<div id="ref-ethnic_slurs" class="csl-entry" role="doc-biblioentry">
+List of ethnic slurs. (2023). In <em>Wikipedia</em>. <a
+href="https://en.wikipedia.org/w/index.php?title=List_of_ethnic_slurs&amp;oldid=1132041045">https://en.wikipedia.org/w/index.php?title=List_of_ethnic_slurs&amp;oldid=1132041045</a>
+</div>
+<div id="ref-about_f1" class="csl-entry" role="doc-biblioentry">
+Lowrey, T. (2019). <em>About <span>F1</span> <span></span>
+<span>Formula</span> <span>One</span> <span>World</span>
+<span>Championship</span> <span>Limited</span></em>. <a
+href="https://corp.formula1.com/about-f1/">https://corp.formula1.com/about-f1/</a>
+</div>
+<div id="ref-orthrus-lexicon_orthrus_2022" class="csl-entry"
+role="doc-biblioentry">
+Orthrus-Lexicon. (2022). <em>Orthrus <span>Toxic</span>
+<span>Dictionary</span> implementation</em>. <a
+href="https://github.com/Orthrus-Lexicon/Toxic">https://github.com/Orthrus-Lexicon/Toxic</a>
+</div>
+<div id="ref-proctor_editors_2018" class="csl-entry"
+role="doc-biblioentry">
+Proctor, W., &amp; Kies, B. (2018). <em>Editors’
+<span>Introduction</span>: <span>On</span> toxic fan practices and the
+new culture wars</em>. <em>15</em>(1).
+</div>
+<div id="ref-van_der_vegt_grievance_2021" class="csl-entry"
+role="doc-biblioentry">
+Vegt, I. van der, Mozes, M., Kleinberg, B., &amp; Gill, P. (2021). The
+<span>Grievance</span> <span>Dictionary</span>:
+<span>Understanding</span> threatening language use. <em>Behavior
+Research Methods</em>, <em>53</em>(5), 2105–2119. <a
+href="https://doi.org/10.3758/s13428-021-01536-2">https://doi.org/10.3758/s13428-021-01536-2</a>
+</div>
+<div id="ref-toxic_fandom" class="csl-entry" role="doc-biblioentry">
+What <span>Is</span> <span>Toxic</span> <span>Fandom</span>? (n.d.). In
+<em>Verywell Mind</em>. Retrieved January 7, 2023, from <a
+href="https://www.verywellmind.com/what-is-toxic-fandom-5214499">https://www.verywellmind.com/what-is-toxic-fandom-5214499</a>
+</div>
+<div id="ref-woodhouse_scary_2022" class="csl-entry"
+role="doc-biblioentry">
+Woodhouse, J. (2022). <span>“<span>Scary</span>”</span> how toxic
+<span>Formula</span> 1 community became during 2021. In
+<em>PlanetF1</em>. <a
+href="https://www.planetf1.com/news/toxic-formula-1-community-2021/">https://www.planetf1.com/news/toxic-formula-1-community-2021/</a>
+</div>
+</div>
+</body>
+</html>

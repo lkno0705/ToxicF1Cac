@@ -512,6 +512,7 @@ comment_df.hate_speech_label.hist()
 ```python
 import os
 os.system("jupyter nbconvert --to markdown final.ipynb")
+os.system("pandoc -s final.md -t html -o final.html --citeproc --bibliography=refs.bib --csl=apa.csl")
 os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs.bib --csl=apa.csl")
 ```
 
@@ -519,7 +520,10 @@ os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs
     [NbConvertApp] Support files will be in final_files/
     [NbConvertApp] Making directory final_files
     [NbConvertApp] Making directory final_files
-    [NbConvertApp] Writing 35143 bytes to final.md
+    [NbConvertApp] Writing 35156 bytes to final.md
+    [WARNING] This document format requires a nonempty <title> element.
+      Defaulting to 'final' as the title.
+      To specify a title, use 'title' in metadata or --metadata title="...".
 
 
 
