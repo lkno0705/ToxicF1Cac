@@ -58,7 +58,7 @@ Formula 1 is the highest class of international racing for open-wheel single-sea
 As the reports over toxic and abusive fan behaviours in social media and at live events are rising, Formula 1 as well as Fans and drivers are taking a stand against toxicity in the Formula 1 community. However, an independent and scientific analysis of this topic is missing and therefore the accusations are sort of hanging in the air without a solid scientific foundation. Therefore, in order to tackle this problem research into the toxicity of Formula 1 fandom is a necassety to gain valuable insights into understanding the problem, where it originates from and to build a foundation for future measures to make attending Formula 1 events as well as the media around it a safer and more enjoyable experience. To take the first step into this direction, this thesis will analyse Youtube comments of the Formula 1 channel in order to determine:
 
 - If the Formula 1 fandom is toxic
-- Are there specific groups that are more toxic then others?
+- Has Toxicity risen over the years?
 - Is the toxicity a "self-made" problem of Formula 1 and where is the toxicity originating from?
 
 ## Fundamentals
@@ -317,8 +317,9 @@ As the dictionary made up of several categories, a set for each dictionary categ
 
 
 ```python
+from tqdm import tqdm
 grievance_set_dictionary: Dict[str, Counter] = defaultdict(Counter)
-for category in categorys:
+for category in tqdm(categorys):
     curr_category_set = set(grievance_dict_df.loc[grievance_dict_df.category == category].word.to_list())
     stemmed_comments, grievance_set_dictionary[category] = dictionary_analysis_over_set_intersection(dict_name=category, dict_set=curr_category_set, data=stemmed_comments)
 stemmed_comments
@@ -328,11 +329,12 @@ Last but not least, the results stored in the stemmed dataset needs to be merged
 
 
 ```python
-comment_df = pd.merge(comment_df, stemmed_comments[["id", "deadline_word_count", "desperation_word_count", "fixation_word_count", 'frustration_word_count', 'god_word_count',
+comment_df = pd.merge(comment_df, stemmed_comments[["deadline_word_count", "desperation_word_count", "fixation_word_count", 'frustration_word_count', 'god_word_count',
        'grievance_word_count', 'hate_word_count', 'help_word_count', 'honour_word_count', 'impostor_word_count', 'jealousy_word_count',
        'loneliness_word_count', 'murder_word_count', 'paranoia_word_count', 'planning_word_count', 'relationship_word_count',
        'soldier_word_count', 'suicide_word_count', 'surveillance_word_count', 'threat_word_count', 'violence_word_count',
-       'weaponry_word_count']], on="id")
+       'weaponry_word_count']], left_index=True, right_index=True)
+len(comment_df)
 ```
 
 ### Ethnic Slurs
@@ -525,6 +527,246 @@ comment_df.hate_speech_label.hist()
 
 
 ## Results
+In this chapter the the three research questions:
+
+- Is Formula 1 Fandom Toxic?
+- Has toxicity risen over the years?
+- Is Toxicity in Formula 1 a self-made problem?
+
+### Is Formula 1 Fandom Toxic?
+
+
+
+```python
+import pandas as pd
+comment_df_dictionarys = pd.read_csv("datasets/comment_df_dicts.csv")
+comment_df_hate_speech = pd.read_csv("datasets/comment_df_hate_speech_transformer.csv")
+comment_df_sentiment = pd.read_csv("datasets/comment_df_sentiment_transformer.csv")
+# videos: pd.DataFrame = pd.read_pickle("datasets/video_data.pkl")
+
+print(len(comment_df_dictionarys))
+print(len(comment_df_hate_speech))
+print(len(comment_df_sentiment))
+
+comment_df = pd.merge(comment_df_dictionarys, comment_df_hate_speech[["hate_speech_label", "hate_speech_score"]], left_index=True, right_index=True)
+comment_df = pd.merge(comment_df, comment_df_sentiment[["sentiment", "sentiment_score"]], left_index=True, right_index=True)
+comment_df
+```
+
+
+```python
+import matplotlib.pyplot as plt
+import swifter
+
+relative_counts = []
+columns = ['toxic_word_count', 'deadline_word_count',
+       'desperation_word_count', 'fixation_word_count',
+       'frustration_word_count', 'god_word_count', 'grievance_word_count',
+       'hate_word_count', 'honour_word_count',
+       'impostor_word_count', 'jealousy_word_count',
+       'murder_word_count', 'paranoia_word_count',
+       'soldier_word_count', 'suicide_word_count',
+       'surveillance_word_count', 'threat_word_count', 'violence_word_count',
+       'weaponry_word_count', 'ethnic_slurs_word_count', 'hate_speech_label', 'sentiment']
+
+# calculate relative counts
+for column in columns[:-2]:
+    relative_count = (comment_df[column].swifter.progress_bar(False).apply(lambda c: 1 if c > 0.0 else 0).sum() * 100) / len(comment_df)
+    relative_counts.append(relative_count)
+
+relative_counts.append((comment_df["hate_speech_label"].swifter.progress_bar(False).apply(lambda l: 1 if l != "NON_HATE" else 0).sum() * 100) / len(comment_df))
+relative_counts.append((comment_df["sentiment"].swifter.progress_bar(False).apply(lambda l: 1 if l != "POSITIVE" else 0).sum() * 100) / len(comment_df))
+
+relative_counts.append(pd.Series(relative_counts).mean())
+columns.append("average_count")
+
+ax = pd.DataFrame(
+    {
+        "relative_counts": relative_counts,
+        "columns": columns
+    }
+).plot(kind="barh", x="columns", y="relative_counts", figsize=(15,12), xlabel="%", title="Relative counts for indications of toxic behaviour")
+ax = ax.bar_label(ax.containers[0])
+```
+
+
+    
+![png](final_files/final_59_0.png)
+    
+
+
+
+```python
+comment_df.hate_speech_score.mean()
+```
+
+
+
+
+    0.8822260307092021
+
+
+
+
+```python
+comment_df.sentiment_score.mean()
+```
+
+
+
+
+    0.9551236870340416
+
+
+
+### Has toxicity risen over the years?
+
+
+```python
+comment_df["contains_toxic_indications"] = comment_df[["sentiment", "hate_speech_label"]].swifter.progress_bar(False).apply(lambda r: 1 if r.sentiment != "POSITIVE" or r.hate_speech_label != "NON_HATE" else 0, axis=1)
+grouped = comment_df[["video_id", "contains_toxic_indications"]].groupby(by="video_id").sum()
+grouped.index = grouped.index.astype(str)
+videos.video_id = videos.video_id.astype(str)
+videos = pd.merge(videos, grouped, left_on="video_id", right_index=True)
+videos.published_at = pd.to_datetime(videos.published_at)
+videos.info()
+```
+
+
+```python
+videos.groupby(by=videos.published_at.dt.year).sum().plot(kind='bar', figsize=(8,5))
+```
+
+
+
+
+    <AxesSubplot: xlabel='published_at'>
+
+
+
+
+    
+![png](final_files/final_64_1.png)
+    
+
+
+
+```python
+ax = videos[["published_at", "contains_toxic_indications"]].groupby(by=[videos.published_at.dt.year ,videos.published_at.dt.month]).sum().plot(style='.-', figsize=(10,5), xlabel="published at")
+x = np.arange(32)
+y = videos.groupby(by=[videos.published_at.dt.year ,videos.published_at.dt.month]).sum().contains_toxic_indications.to_list()
+z = np.polyfit(x,y,2)
+p = np.poly1d(z)
+ax.plot(x, p(x), linestyle="dashed", label="trend")
+ax.axvline(0, color="red", label="2020 season")
+ax.axvline(8, color="red")
+ax.axvline(10, color="green", label="2021 season")
+ax.axvline(19, color="green")
+ax.axvline(22, color="orange", label="2022 season")
+ax.axvline(31, color="orange")
+ax.legend()
+```
+
+
+
+
+    <matplotlib.legend.Legend at 0x31fe85340>
+
+
+
+
+    
+![png](final_files/final_65_1.png)
+    
+
+
+
+```python
+grouped.mean()
+```
+
+
+
+
+    contains_toxic_indications    52.708696
+    dtype: float64
+
+
+
+### Is toxicity a self-made problem?
+
+
+```python
+from tqdm import tqdm
+
+video_df_for_transformers = videos.copy()
+video_df_for_transformers["title"] = video_df_for_transformers.title.swifter.apply(lambda text: preprocess(text))
+
+MODEL = "distilbert-base-uncased-finetuned-sst-2-english"
+config = AutoConfig.from_pretrained(MODEL)
+tokenizer = AutoTokenizer.from_pretrained(MODEL)
+
+model = AutoModelForSequenceClassification.from_pretrained(MODEL)
+
+label_list = []
+score_list = []
+
+for text in tqdm(video_df_for_transformers.title.to_list()):
+    encoded_input = tokenizer(text, return_tensors='pt', padding=True, truncation=True, max_length=512)
+    output = model(**encoded_input)
+    scores = output[0][0].detach().numpy()
+    scores = softmax(scores)
+    label_list.append(config.id2label[np.argsort(scores)[::-1][0]])
+    score_list.append(max(scores))
+
+videos["sentiment"] = label_list
+videos["sentiment_score"] = score_list
+videos
+```
+
+
+```python
+relative_video_counts = []
+relative_video_counts.append((videos["sentiment"].swifter.progress_bar(False).apply(lambda l: 1 if l != "POSITIVE" else 0).sum() * 100) / len(videos))
+relative_video_counts.append((videos["sentiment"].swifter.progress_bar(False).apply(lambda l: 1 if l != "NEGATIVE" else 0).sum() * 100) / len(videos))
+columns = ["negative", "positive"]
+
+pd.DataFrame({
+    "relative_count": relative_video_counts,
+    "columns": columns
+}).plot(kind="bar", x="columns", title="Fraction of videos that positive/negative")
+```
+
+
+
+
+    <AxesSubplot: title={'center': 'Fraction of videos that positive/negative'}, xlabel='columns'>
+
+
+
+
+    
+![png](final_files/final_69_1.png)
+    
+
+
+
+```python
+videos[["sentiment", "contains_toxic_indications"]].groupby("sentiment").mean().plot(kind="bar", title="Average Toxic Indication Count per Video Sentiment")
+```
+
+
+
+
+    <AxesSubplot: title={'center': 'Average Toxic Indication Count per Video Sentiment'}, xlabel='sentiment'>
+
+
+
+
+    
+![png](final_files/final_70_1.png)
+    
+
 
 ## Bibliography
 
@@ -542,7 +784,12 @@ os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs
     [NbConvertApp] Support files will be in final_files/
     [NbConvertApp] Making directory final_files
     [NbConvertApp] Making directory final_files
-    [NbConvertApp] Writing 40497 bytes to final.md
+    [NbConvertApp] Making directory final_files
+    [NbConvertApp] Making directory final_files
+    [NbConvertApp] Making directory final_files
+    [NbConvertApp] Making directory final_files
+    [NbConvertApp] Making directory final_files
+    [NbConvertApp] Writing 50621 bytes to final.md
     [WARNING] This document format requires a nonempty <title> element.
       Defaulting to 'final' as the title.
       To specify a title, use 'title' in metadata or --metadata title="...".
