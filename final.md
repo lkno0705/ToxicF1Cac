@@ -85,8 +85,6 @@ What is also observed, is that "toxic" fans often fall back to racist and mysoge
 
 However toxic fan behaviour is not limited to racist, misogynistic comments that can also include hate-speech. Some toxic fan are even going as far as to writing death or rape threats, doxing people (doxing refers to leaking personal information online) or to show abusive and harassing behaviour in public against other groups [@proctor_editors_2018], [@arouh_toxic_2020].
 
-## Concept
-
 ## The Dataset
 The dataset that will be used throughout this thesis consists of 40200 Comments with replys from 500 youtube videos that were uploaded since 2020 of the formula 1 youtube channel. To obtain this data, the Youtube API V3 was used.
 
@@ -450,24 +448,6 @@ comment_df
 
 
 ```python
-comment_df.sentiment.hist()
-```
-
-
-
-
-    <AxesSubplot: >
-
-
-
-
-    
-![png](final_files/final_50_1.png)
-    
-
-
-
-```python
 comment_df.to_csv("datasets/comment_df_sentiment_transformer.csv" ,index=False) # df caching to save processing time on reload
 ```
 
@@ -508,24 +488,6 @@ comment_df
 comment_df.to_csv("datasets/comment_df_hate_speech_transformer.csv", index=False)
 ```
 
-
-```python
-comment_df.hate_speech_label.hist()
-```
-
-
-
-
-    <AxesSubplot: >
-
-
-
-
-    
-![png](final_files/final_56_1.png)
-    
-
-
 ## Results
 In this chapter the the three research questions:
 
@@ -533,8 +495,12 @@ In this chapter the the three research questions:
 - Has toxicity risen over the years?
 - Is Toxicity in Formula 1 a self-made problem?
 
+Will be answered.
+
 ### Is Formula 1 Fandom Toxic?
 
+
+In order to answer this question, the following figure, which shows the relative counts for indications of toxic behaviour across all comments in the dataset will be analyzed. With toxic indications beeing defined as evidence from the dictionary and transformer based analysis, that point to the possibility that a given comment is toxic. For example, if the dictionary analysis finds a toxic word from the toxic words dictionary, this is considered a toxic indication. The term of toxic indications for relative counts is defined as a binary variable, that is either true or false. Therefore, it does not matter how much evidence can be found in a comment in order to compute the relative counts. It only counts, that evidence has been found and then the comment is considered to include toxic indications.
 
 
 ```python
@@ -542,7 +508,7 @@ import pandas as pd
 comment_df_dictionarys = pd.read_csv("datasets/comment_df_dicts.csv")
 comment_df_hate_speech = pd.read_csv("datasets/comment_df_hate_speech_transformer.csv")
 comment_df_sentiment = pd.read_csv("datasets/comment_df_sentiment_transformer.csv")
-# videos: pd.DataFrame = pd.read_pickle("datasets/video_data.pkl")
+videos: pd.DataFrame = pd.read_pickle("datasets/video_data.pkl")
 
 print(len(comment_df_dictionarys))
 print(len(comment_df_hate_speech))
@@ -591,33 +557,12 @@ ax = ax.bar_label(ax.containers[0])
 
 
     
-![png](final_files/final_59_0.png)
+![png](final_files/final_57_0.png)
     
 
 
-
-```python
-comment_df.hate_speech_score.mean()
-```
-
-
-
-
-    0.8822260307092021
-
-
-
-
-```python
-comment_df.sentiment_score.mean()
-```
-
-
-
-
-    0.9551236870340416
-
-
+As shown in the plot, on average across all categorys tested, with all tests being weighted equally, 21% of all comments show indications for toxic behaviour. However, if the figure is broken down to the individual categories, each test paints a different picture. The tests, that can directly detect parts of toxic behaviour such as hate speech, ethnic slurs to detect racism and the toxicity dictionary all show low percentages of comments that actually contain these direct indications. 9% of comments have been flagged as hate speech, 0.1 % of comments contain ethnic slurs directly and 6% of comments contain toxic words. Therefore, the fraction of comments with direct evidence for toxic behaviour is really low, especially in terms of containing racism. However, the results for the categories of the grievance dictionary are much higher, ranging from 11% for impostor words and up to 39% for words in the deadline category. The grievance dictionary showed an especially high occurence for words regarding, surveillance, god, desperation and frustration. Which is in the context of the sport not suprising, as Formula 1 is a highly competitive, popular and dangerous sport which is government by the FIA, which has been at the center for a lot of controversy in the last two seasons (2021 & 2022) [@richards_fia_2022]. Therefore, the main talking points in Formula 1 at the moment are the FIA, teams bending rules, announcements, team errors and recent crashes of drivers. Because of that, it is not unsurprising that surveillance, god, desperation and frustration are the categories with the highest percentages, as they are a natural and direct consequence of the sports characteristics. All other occurences for the other categorys are ranging between 10% to 20%, which is not an inconsiderable amount, if the topics of some categorys are taken into consideration. Almost 20% of comments show indications for suicide, murder, threat, and violence, weaponry and hate. This is not an inconsiderable amount, it means that on average every 5th comment contains life threatening and hateful content. Also almost 60% of comments show a negative sentiment. Even though this metric is not representing toxicity directy, it clearly shows, that Formula 1 fandom is not in a positive frame of mind, regardless of the discussion topic.
+In summary, every 5th comment shows clear indications for toxic content, with 60% percent of comments being negative. Therefore, one could make the assumption that Formula 1 fandom is indeed toxic, especially because of the frequency that one can observe comments with toxic behaviour. However, the situation is not as bad on social media as reports might suggest. The overall current negativity in Formula 1 fandom is amplifying the perception of toxicity in Formula 1 fandom as most people connect toxic behaviour not just with racism, misogyny and hate speech but rather with overall negative behaviour [@toxic_fandom]. Therefore, most people will consider current Formula 1 fandom as toxic, especially paired with recent reports of toxic and abusive behaviour during events and online [@f1_drivers_addressing_toxic_fans] [@woodhouse_scary_2022].
 
 ### Has toxicity risen over the years?
 
@@ -631,6 +576,25 @@ videos = pd.merge(videos, grouped, left_on="video_id", right_index=True)
 videos.published_at = pd.to_datetime(videos.published_at)
 videos.info()
 ```
+
+    <class 'pandas.core.frame.DataFrame'>
+    Int64Index: 491 entries, 0 to 491
+    Data columns (total 10 columns):
+     #   Column                      Non-Null Count  Dtype              
+    ---  ------                      --------------  -----              
+     0   video_id                    491 non-null    object             
+     1   title                       491 non-null    object             
+     2   description                 491 non-null    object             
+     3   channel                     491 non-null    object             
+     4   published_at                491 non-null    datetime64[ns, UTC]
+     5   tags                        487 non-null    object             
+     6   like_count                  491 non-null    object             
+     7   favorite_count              491 non-null    object             
+     8   comment_count               491 non-null    object             
+     9   contains_toxic_indications  491 non-null    int64              
+    dtypes: datetime64[ns, UTC](1), int64(1), object(8)
+    memory usage: 42.2+ KB
+
 
 
 ```python
@@ -646,7 +610,7 @@ videos.groupby(by=videos.published_at.dt.year).sum().plot(kind='bar', figsize=(8
 
 
     
-![png](final_files/final_64_1.png)
+![png](final_files/final_61_1.png)
     
 
 
@@ -655,7 +619,7 @@ videos.groupby(by=videos.published_at.dt.year).sum().plot(kind='bar', figsize=(8
 ax = videos[["published_at", "contains_toxic_indications"]].groupby(by=[videos.published_at.dt.year ,videos.published_at.dt.month]).sum().plot(style='.-', figsize=(10,5), xlabel="published at")
 x = np.arange(32)
 y = videos.groupby(by=[videos.published_at.dt.year ,videos.published_at.dt.month]).sum().contains_toxic_indications.to_list()
-z = np.polyfit(x,y,2)
+z = np.polyfit(x,y,1)
 p = np.poly1d(z)
 ax.plot(x, p(x), linestyle="dashed", label="trend")
 ax.axvline(0, color="red", label="2020 season")
@@ -663,20 +627,20 @@ ax.axvline(8, color="red")
 ax.axvline(10, color="green", label="2021 season")
 ax.axvline(19, color="green")
 ax.axvline(22, color="orange", label="2022 season")
-ax.axvline(31, color="orange")
+ax.axvline(30, color="orange")
 ax.legend()
 ```
 
 
 
 
-    <matplotlib.legend.Legend at 0x31fe85340>
+    <matplotlib.legend.Legend at 0x328fec5e0>
 
 
 
 
     
-![png](final_files/final_65_1.png)
+![png](final_files/final_62_1.png)
     
 
 
@@ -694,6 +658,38 @@ grouped.mean()
 
 
 ### Is toxicity a self-made problem?
+
+
+```python
+fig, ax = plt.subplots(figsize=(10,5))
+videos.comment_count = videos.comment_count.astype(int)
+videos.like_count = videos.like_count.astype(int)
+ax2 = ax.twinx()
+videos[["published_at", "comment_count"]].groupby(by=[videos.published_at.dt.year ,videos.published_at.dt.month]).mean().plot(ax=ax, style='.-', xlabel="published at", ylabel="average total comment count")
+videos[["published_at", "like_count"]].groupby(by=[videos.published_at.dt.year ,videos.published_at.dt.month]).mean().plot(ax=ax2, style='.-', xlabel="published at", c="darkgreen", ylabel="average total like count")
+x = np.arange(32)
+y = videos.groupby(by=[videos.published_at.dt.year ,videos.published_at.dt.month]).mean().comment_count.to_list()
+z = np.polyfit(x,y,2)
+p = np.poly1d(z)
+ax.plot(x, p(x), linestyle="dashed", label="trend")
+ax.axvline(0, color="red", label="2020 season")
+ax.axvline(10, color="green", label="2021 season")
+ax.axvline(22, color="orange", label="2022 season")
+lns = ax.get_lines() + ax2.get_lines()
+ax.legend(ax.get_lines() + ax2.get_lines(), [l.get_label() for l in lns])
+ax.axvline(8, color="red")
+ax.axvline(19, color="green")
+ax.axvline(30, color="orange")
+ax2.get_legend().remove()
+```
+
+
+    
+![png](final_files/final_65_0.png)
+    
+
+
+![F1 TV viewing figure](images/F1_viewers.png)
 
 
 ```python
@@ -746,7 +742,7 @@ pd.DataFrame({
 
 
     
-![png](final_files/final_69_1.png)
+![png](final_files/final_68_1.png)
     
 
 
@@ -764,9 +760,37 @@ videos[["sentiment", "contains_toxic_indications"]].groupby("sentiment").mean().
 
 
     
-![png](final_files/final_70_1.png)
+![png](final_files/final_69_1.png)
     
 
+
+## Result Validity
+
+
+```python
+comment_df.sentiment_score.mean()
+```
+
+
+
+
+    0.9551236870340416
+
+
+
+
+```python
+comment_df.hate_speech_score.mean()
+```
+
+
+
+
+    0.8822260307092021
+
+
+
+## Conclusion
 
 ## Bibliography
 
@@ -789,7 +813,7 @@ os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs
     [NbConvertApp] Making directory final_files
     [NbConvertApp] Making directory final_files
     [NbConvertApp] Making directory final_files
-    [NbConvertApp] Writing 50621 bytes to final.md
+    [NbConvertApp] Writing 50861 bytes to final.md
     [WARNING] This document format requires a nonempty <title> element.
       Defaulting to 'final' as the title.
       To specify a title, use 'title' in metadata or --metadata title="...".

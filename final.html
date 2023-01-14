@@ -508,7 +508,6 @@ harassing behaviour in public against other groups <span
 class="citation" data-cites="proctor_editors_2018">(Proctor &amp; Kies,
 2018)</span>, <span class="citation"
 data-cites="arouh_toxic_2020">(Arouh, 2020)</span>.</p>
-<h2 id="concept">Concept</h2>
 <h2 id="the-dataset">The Dataset</h2>
 <p>The dataset that will be used throughout this thesis consists of
 40200 Comments with replys from 500 youtube videos that were uploaded
@@ -1025,14 +1024,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a h
 <span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>comment_df[<span class="st">&quot;sentiment_score&quot;</span>] <span class="op">=</span> score_list</span>
 <span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>comment_df</span></code></pre></div>
 <div class="sourceCode" id="cb23"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>comment_df.sentiment.hist()</span></code></pre></div>
-<pre><code>&lt;AxesSubplot: &gt;</code></pre>
-<figure>
-<img src="final_files/final_50_1.png" alt="png" />
-<figcaption aria-hidden="true">png</figcaption>
-</figure>
-<div class="sourceCode" id="cb25"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>comment_df.to_csv(<span class="st">&quot;datasets/comment_df_sentiment_transformer.csv&quot;</span> ,index<span class="op">=</span><span class="va">False</span>) <span class="co"># df caching to save processing time on reload</span></span></code></pre></div>
+class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>comment_df.to_csv(<span class="st">&quot;datasets/comment_df_sentiment_transformer.csv&quot;</span> ,index<span class="op">=</span><span class="va">False</span>) <span class="co"># df caching to save processing time on reload</span></span></code></pre></div>
 <h3 id="hate-speech">Hate Speech</h3>
 <p>The second transformer classifier used during this thesis is the
 “Hate-speech-CNERG/dehatebert-mono-english” transformer. It aims to
@@ -1075,36 +1067,29 @@ to the crueltys during the holocaust in germany.</p>
 <p>For the actual implementation, the same process as for the sentiment
 classifier is reused, as only the model id needs to be changed and model
 weights etc. will be loaded automatically.</p>
-<div class="sourceCode" id="cb26"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>MODEL <span class="op">=</span> <span class="st">&quot;Hate-speech-CNERG/dehatebert-mono-english&quot;</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(MODEL)</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>config <span class="op">=</span> AutoConfig.from_pretrained(MODEL)</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForSequenceClassification.from_pretrained(MODEL)</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>label_list <span class="op">=</span> []</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>score_list <span class="op">=</span> []</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> tqdm(comment_df_for_transformers.text.to_list()):</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    encoded_input <span class="op">=</span> tokenizer(text, return_tensors<span class="op">=</span><span class="st">&#39;pt&#39;</span>, padding<span class="op">=</span><span class="va">True</span>, truncation<span class="op">=</span><span class="va">True</span>, max_length<span class="op">=</span><span class="dv">514</span>)</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> model(<span class="op">**</span>encoded_input)</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> output[<span class="dv">0</span>][<span class="dv">0</span>].detach().numpy()</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> softmax(scores)</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    label_list.append(config.id2label[np.argsort(scores)[::<span class="op">-</span><span class="dv">1</span>][<span class="dv">0</span>]])</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    score_list.append(<span class="bu">max</span>(scores))</span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>comment_df[<span class="st">&quot;hate_speech_label&quot;</span>] <span class="op">=</span> label_list</span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>comment_df[<span class="st">&quot;hate_speech_score&quot;</span>] <span class="op">=</span> score_list</span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>comment_df</span></code></pre></div>
-<div class="sourceCode" id="cb27"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>comment_df.to_csv(<span class="st">&quot;datasets/comment_df_hate_speech_transformer.csv&quot;</span>, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb28"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>comment_df.hate_speech_label.hist()</span></code></pre></div>
-<pre><code>&lt;AxesSubplot: &gt;</code></pre>
-<figure>
-<img src="final_files/final_56_1.png" alt="png" />
-<figcaption aria-hidden="true">png</figcaption>
-</figure>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>MODEL <span class="op">=</span> <span class="st">&quot;Hate-speech-CNERG/dehatebert-mono-english&quot;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(MODEL)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>config <span class="op">=</span> AutoConfig.from_pretrained(MODEL)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForSequenceClassification.from_pretrained(MODEL)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>label_list <span class="op">=</span> []</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>score_list <span class="op">=</span> []</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> tqdm(comment_df_for_transformers.text.to_list()):</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    encoded_input <span class="op">=</span> tokenizer(text, return_tensors<span class="op">=</span><span class="st">&#39;pt&#39;</span>, padding<span class="op">=</span><span class="va">True</span>, truncation<span class="op">=</span><span class="va">True</span>, max_length<span class="op">=</span><span class="dv">514</span>)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> model(<span class="op">**</span>encoded_input)</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> output[<span class="dv">0</span>][<span class="dv">0</span>].detach().numpy()</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> softmax(scores)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    label_list.append(config.id2label[np.argsort(scores)[::<span class="op">-</span><span class="dv">1</span>][<span class="dv">0</span>]])</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    score_list.append(<span class="bu">max</span>(scores))</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>comment_df[<span class="st">&quot;hate_speech_label&quot;</span>] <span class="op">=</span> label_list</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>comment_df[<span class="st">&quot;hate_speech_score&quot;</span>] <span class="op">=</span> score_list</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>comment_df</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>comment_df.to_csv(<span class="st">&quot;datasets/comment_df_hate_speech_transformer.csv&quot;</span>, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div>
 <h2 id="results">Results</h2>
 <p>In this chapter the the three research questions:</p>
 <ul>
@@ -1112,154 +1097,267 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a h
 <li>Has toxicity risen over the years?</li>
 <li>Is Toxicity in Formula 1 a self-made problem?</li>
 </ul>
+<p>Will be answered.</p>
 <h3 id="is-formula-1-fandom-toxic">Is Formula 1 Fandom Toxic?</h3>
-<div class="sourceCode" id="cb30"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>comment_df_dictionarys <span class="op">=</span> pd.read_csv(<span class="st">&quot;datasets/comment_df_dicts.csv&quot;</span>)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>comment_df_hate_speech <span class="op">=</span> pd.read_csv(<span class="st">&quot;datasets/comment_df_hate_speech_transformer.csv&quot;</span>)</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>comment_df_sentiment <span class="op">=</span> pd.read_csv(<span class="st">&quot;datasets/comment_df_sentiment_transformer.csv&quot;</span>)</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co"># videos: pd.DataFrame = pd.read_pickle(&quot;datasets/video_data.pkl&quot;)</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(comment_df_dictionarys))</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(comment_df_hate_speech))</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(comment_df_sentiment))</span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>comment_df <span class="op">=</span> pd.merge(comment_df_dictionarys, comment_df_hate_speech[[<span class="st">&quot;hate_speech_label&quot;</span>, <span class="st">&quot;hate_speech_score&quot;</span>]], left_index<span class="op">=</span><span class="va">True</span>, right_index<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>comment_df <span class="op">=</span> pd.merge(comment_df, comment_df_sentiment[[<span class="st">&quot;sentiment&quot;</span>, <span class="st">&quot;sentiment_score&quot;</span>]], left_index<span class="op">=</span><span class="va">True</span>, right_index<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>comment_df</span></code></pre></div>
-<div class="sourceCode" id="cb31"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> swifter</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>relative_counts <span class="op">=</span> []</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>columns <span class="op">=</span> [<span class="st">&#39;toxic_word_count&#39;</span>, <span class="st">&#39;deadline_word_count&#39;</span>,</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;desperation_word_count&#39;</span>, <span class="st">&#39;fixation_word_count&#39;</span>,</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;frustration_word_count&#39;</span>, <span class="st">&#39;god_word_count&#39;</span>, <span class="st">&#39;grievance_word_count&#39;</span>,</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;hate_word_count&#39;</span>, <span class="st">&#39;honour_word_count&#39;</span>,</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;impostor_word_count&#39;</span>, <span class="st">&#39;jealousy_word_count&#39;</span>,</span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;murder_word_count&#39;</span>, <span class="st">&#39;paranoia_word_count&#39;</span>,</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;soldier_word_count&#39;</span>, <span class="st">&#39;suicide_word_count&#39;</span>,</span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;surveillance_word_count&#39;</span>, <span class="st">&#39;threat_word_count&#39;</span>, <span class="st">&#39;violence_word_count&#39;</span>,</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;weaponry_word_count&#39;</span>, <span class="st">&#39;ethnic_slurs_word_count&#39;</span>, <span class="st">&#39;hate_speech_label&#39;</span>, <span class="st">&#39;sentiment&#39;</span>]</span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate relative counts</span></span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> column <span class="kw">in</span> columns[:<span class="op">-</span><span class="dv">2</span>]:</span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    relative_count <span class="op">=</span> (comment_df[column].swifter.progress_bar(<span class="va">False</span>).<span class="bu">apply</span>(<span class="kw">lambda</span> c: <span class="dv">1</span> <span class="cf">if</span> c <span class="op">&gt;</span> <span class="fl">0.0</span> <span class="cf">else</span> <span class="dv">0</span>).<span class="bu">sum</span>() <span class="op">*</span> <span class="dv">100</span>) <span class="op">/</span> <span class="bu">len</span>(comment_df)</span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>    relative_counts.append(relative_count)</span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>relative_counts.append((comment_df[<span class="st">&quot;hate_speech_label&quot;</span>].swifter.progress_bar(<span class="va">False</span>).<span class="bu">apply</span>(<span class="kw">lambda</span> l: <span class="dv">1</span> <span class="cf">if</span> l <span class="op">!=</span> <span class="st">&quot;NON_HATE&quot;</span> <span class="cf">else</span> <span class="dv">0</span>).<span class="bu">sum</span>() <span class="op">*</span> <span class="dv">100</span>) <span class="op">/</span> <span class="bu">len</span>(comment_df))</span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>relative_counts.append((comment_df[<span class="st">&quot;sentiment&quot;</span>].swifter.progress_bar(<span class="va">False</span>).<span class="bu">apply</span>(<span class="kw">lambda</span> l: <span class="dv">1</span> <span class="cf">if</span> l <span class="op">!=</span> <span class="st">&quot;POSITIVE&quot;</span> <span class="cf">else</span> <span class="dv">0</span>).<span class="bu">sum</span>() <span class="op">*</span> <span class="dv">100</span>) <span class="op">/</span> <span class="bu">len</span>(comment_df))</span>
-<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>relative_counts.append(pd.Series(relative_counts).mean())</span>
-<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>columns.append(<span class="st">&quot;average_count&quot;</span>)</span>
-<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;relative_counts&quot;</span>: relative_counts,</span>
-<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;columns&quot;</span>: columns</span>
-<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>).plot(kind<span class="op">=</span><span class="st">&quot;barh&quot;</span>, x<span class="op">=</span><span class="st">&quot;columns&quot;</span>, y<span class="op">=</span><span class="st">&quot;relative_counts&quot;</span>, figsize<span class="op">=</span>(<span class="dv">15</span>,<span class="dv">12</span>), xlabel<span class="op">=</span><span class="st">&quot;%&quot;</span>, title<span class="op">=</span><span class="st">&quot;Relative counts for indications of toxic behaviour&quot;</span>)</span>
-<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> ax.bar_label(ax.containers[<span class="dv">0</span>])</span></code></pre></div>
+<p>In order to answer this question, the following figure, which shows
+the relative counts for indications of toxic behaviour across all
+comments in the dataset will be analyzed. With toxic indications beeing
+defined as evidence from the dictionary and transformer based analysis,
+that point to the possibility that a given comment is toxic. For
+example, if the dictionary analysis finds a toxic word from the toxic
+words dictionary, this is considered a toxic indication. The term of
+toxic indications for relative counts is defined as a binary variable,
+that is either true or false. Therefore, it does not matter how much
+evidence can be found in a comment in order to compute the relative
+counts. It only counts, that evidence has been found and then the
+comment is considered to include toxic indications.</p>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>comment_df_dictionarys <span class="op">=</span> pd.read_csv(<span class="st">&quot;datasets/comment_df_dicts.csv&quot;</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>comment_df_hate_speech <span class="op">=</span> pd.read_csv(<span class="st">&quot;datasets/comment_df_hate_speech_transformer.csv&quot;</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>comment_df_sentiment <span class="op">=</span> pd.read_csv(<span class="st">&quot;datasets/comment_df_sentiment_transformer.csv&quot;</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>videos: pd.DataFrame <span class="op">=</span> pd.read_pickle(<span class="st">&quot;datasets/video_data.pkl&quot;</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(comment_df_dictionarys))</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(comment_df_hate_speech))</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(comment_df_sentiment))</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>comment_df <span class="op">=</span> pd.merge(comment_df_dictionarys, comment_df_hate_speech[[<span class="st">&quot;hate_speech_label&quot;</span>, <span class="st">&quot;hate_speech_score&quot;</span>]], left_index<span class="op">=</span><span class="va">True</span>, right_index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>comment_df <span class="op">=</span> pd.merge(comment_df, comment_df_sentiment[[<span class="st">&quot;sentiment&quot;</span>, <span class="st">&quot;sentiment_score&quot;</span>]], left_index<span class="op">=</span><span class="va">True</span>, right_index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>comment_df</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> swifter</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>relative_counts <span class="op">=</span> []</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>columns <span class="op">=</span> [<span class="st">&#39;toxic_word_count&#39;</span>, <span class="st">&#39;deadline_word_count&#39;</span>,</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;desperation_word_count&#39;</span>, <span class="st">&#39;fixation_word_count&#39;</span>,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;frustration_word_count&#39;</span>, <span class="st">&#39;god_word_count&#39;</span>, <span class="st">&#39;grievance_word_count&#39;</span>,</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;hate_word_count&#39;</span>, <span class="st">&#39;honour_word_count&#39;</span>,</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;impostor_word_count&#39;</span>, <span class="st">&#39;jealousy_word_count&#39;</span>,</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;murder_word_count&#39;</span>, <span class="st">&#39;paranoia_word_count&#39;</span>,</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;soldier_word_count&#39;</span>, <span class="st">&#39;suicide_word_count&#39;</span>,</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;surveillance_word_count&#39;</span>, <span class="st">&#39;threat_word_count&#39;</span>, <span class="st">&#39;violence_word_count&#39;</span>,</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>       <span class="st">&#39;weaponry_word_count&#39;</span>, <span class="st">&#39;ethnic_slurs_word_count&#39;</span>, <span class="st">&#39;hate_speech_label&#39;</span>, <span class="st">&#39;sentiment&#39;</span>]</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate relative counts</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> column <span class="kw">in</span> columns[:<span class="op">-</span><span class="dv">2</span>]:</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>    relative_count <span class="op">=</span> (comment_df[column].swifter.progress_bar(<span class="va">False</span>).<span class="bu">apply</span>(<span class="kw">lambda</span> c: <span class="dv">1</span> <span class="cf">if</span> c <span class="op">&gt;</span> <span class="fl">0.0</span> <span class="cf">else</span> <span class="dv">0</span>).<span class="bu">sum</span>() <span class="op">*</span> <span class="dv">100</span>) <span class="op">/</span> <span class="bu">len</span>(comment_df)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>    relative_counts.append(relative_count)</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>relative_counts.append((comment_df[<span class="st">&quot;hate_speech_label&quot;</span>].swifter.progress_bar(<span class="va">False</span>).<span class="bu">apply</span>(<span class="kw">lambda</span> l: <span class="dv">1</span> <span class="cf">if</span> l <span class="op">!=</span> <span class="st">&quot;NON_HATE&quot;</span> <span class="cf">else</span> <span class="dv">0</span>).<span class="bu">sum</span>() <span class="op">*</span> <span class="dv">100</span>) <span class="op">/</span> <span class="bu">len</span>(comment_df))</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>relative_counts.append((comment_df[<span class="st">&quot;sentiment&quot;</span>].swifter.progress_bar(<span class="va">False</span>).<span class="bu">apply</span>(<span class="kw">lambda</span> l: <span class="dv">1</span> <span class="cf">if</span> l <span class="op">!=</span> <span class="st">&quot;POSITIVE&quot;</span> <span class="cf">else</span> <span class="dv">0</span>).<span class="bu">sum</span>() <span class="op">*</span> <span class="dv">100</span>) <span class="op">/</span> <span class="bu">len</span>(comment_df))</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>relative_counts.append(pd.Series(relative_counts).mean())</span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>columns.append(<span class="st">&quot;average_count&quot;</span>)</span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;relative_counts&quot;</span>: relative_counts,</span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;columns&quot;</span>: columns</span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>).plot(kind<span class="op">=</span><span class="st">&quot;barh&quot;</span>, x<span class="op">=</span><span class="st">&quot;columns&quot;</span>, y<span class="op">=</span><span class="st">&quot;relative_counts&quot;</span>, figsize<span class="op">=</span>(<span class="dv">15</span>,<span class="dv">12</span>), xlabel<span class="op">=</span><span class="st">&quot;%&quot;</span>, title<span class="op">=</span><span class="st">&quot;Relative counts for indications of toxic behaviour&quot;</span>)</span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> ax.bar_label(ax.containers[<span class="dv">0</span>])</span></code></pre></div>
 <figure>
-<img src="final_files/final_59_0.png" alt="png" />
+<img src="final_files/final_57_0.png" alt="png" />
+<figcaption aria-hidden="true">png</figcaption>
+</figure>
+<p>As shown in the plot, on average across all categorys tested, with
+all tests being weighted equally, 21% of all comments show indications
+for toxic behaviour. However, if the figure is broken down to the
+individual categories, each test paints a different picture. The tests,
+that can directly detect parts of toxic behaviour such as hate speech,
+ethnic slurs to detect racism and the toxicity dictionary all show low
+percentages of comments that actually contain these direct indications.
+9% of comments have been flagged as hate speech, 0.1 % of comments
+contain ethnic slurs directly and 6% of comments contain toxic words.
+Therefore, the fraction of comments with direct evidence for toxic
+behaviour is really low, especially in terms of containing racism.
+However, the results for the categories of the grievance dictionary are
+much higher, ranging from 11% for impostor words and up to 39% for words
+in the deadline category. The grievance dictionary showed an especially
+high occurence for words regarding, surveillance, god, desperation and
+frustration. Which is in the context of the sport not suprising, as
+Formula 1 is a highly competitive, popular and dangerous sport which is
+government by the FIA, which has been at the center for a lot of
+controversy in the last two seasons (2021 &amp; 2022) <span
+class="citation" data-cites="richards_fia_2022">(Richards, 2022)</span>.
+Therefore, the main talking points in Formula 1 at the moment are the
+FIA, teams bending rules, announcements, team errors and recent crashes
+of drivers. Because of that, it is not unsurprising that surveillance,
+god, desperation and frustration are the categories with the highest
+percentages, as they are a natural and direct consequence of the sports
+characteristics. All other occurences for the other categorys are
+ranging between 10% to 20%, which is not an inconsiderable amount, if
+the topics of some categorys are taken into consideration. Almost 20% of
+comments show indications for suicide, murder, threat, and violence,
+weaponry and hate. This is not an inconsiderable amount, it means that
+on average every 5th comment contains life threatening and hateful
+content. Also almost 60% of comments show a negative sentiment. Even
+though this metric is not representing toxicity directy, it clearly
+shows, that Formula 1 fandom is not in a positive frame of mind,
+regardless of the discussion topic. In summary, every 5th comment shows
+clear indications for toxic content, with 60% percent of comments being
+negative. Therefore, one could make the assumption that Formula 1 fandom
+is indeed toxic, especially because of the frequency that one can
+observe comments with toxic behaviour. However, the situation is not as
+bad on social media as reports might suggest. The overall current
+negativity in Formula 1 fandom is amplifying the perception of toxicity
+in Formula 1 fandom as most people connect toxic behaviour not just with
+racism, misogyny and hate speech but rather with overall negative
+behaviour <span class="citation" data-cites="toxic_fandom">(<span>“What
+<span>Is</span> <span>Toxic</span> <span>Fandom</span>?”</span>
+n.d.)</span>. Therefore, most people will consider current Formula 1
+fandom as toxic, especially paired with recent reports of toxic and
+abusive behaviour during events and online <span class="citation"
+data-cites="f1_drivers_addressing_toxic_fans">(<em>3 Times
+<span>F1</span> Drivers Addressed Toxic Fan Behavior</em>, n.d.)</span>
+<span class="citation" data-cites="woodhouse_scary_2022">(Woodhouse,
+2022)</span>.</p>
+<h3 id="has-toxicity-risen-over-the-years">Has toxicity risen over the
+years?</h3>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>comment_df[<span class="st">&quot;contains_toxic_indications&quot;</span>] <span class="op">=</span> comment_df[[<span class="st">&quot;sentiment&quot;</span>, <span class="st">&quot;hate_speech_label&quot;</span>]].swifter.progress_bar(<span class="va">False</span>).<span class="bu">apply</span>(<span class="kw">lambda</span> r: <span class="dv">1</span> <span class="cf">if</span> r.sentiment <span class="op">!=</span> <span class="st">&quot;POSITIVE&quot;</span> <span class="kw">or</span> r.hate_speech_label <span class="op">!=</span> <span class="st">&quot;NON_HATE&quot;</span> <span class="cf">else</span> <span class="dv">0</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>grouped <span class="op">=</span> comment_df[[<span class="st">&quot;video_id&quot;</span>, <span class="st">&quot;contains_toxic_indications&quot;</span>]].groupby(by<span class="op">=</span><span class="st">&quot;video_id&quot;</span>).<span class="bu">sum</span>()</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>grouped.index <span class="op">=</span> grouped.index.astype(<span class="bu">str</span>)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>videos.video_id <span class="op">=</span> videos.video_id.astype(<span class="bu">str</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>videos <span class="op">=</span> pd.merge(videos, grouped, left_on<span class="op">=</span><span class="st">&quot;video_id&quot;</span>, right_index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>videos.published_at <span class="op">=</span> pd.to_datetime(videos.published_at)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>videos.info()</span></code></pre></div>
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+Int64Index: 491 entries, 0 to 491
+Data columns (total 10 columns):
+ #   Column                      Non-Null Count  Dtype              
+---  ------                      --------------  -----              
+ 0   video_id                    491 non-null    object             
+ 1   title                       491 non-null    object             
+ 2   description                 491 non-null    object             
+ 3   channel                     491 non-null    object             
+ 4   published_at                491 non-null    datetime64[ns, UTC]
+ 5   tags                        487 non-null    object             
+ 6   like_count                  491 non-null    object             
+ 7   favorite_count              491 non-null    object             
+ 8   comment_count               491 non-null    object             
+ 9   contains_toxic_indications  491 non-null    int64              
+dtypes: datetime64[ns, UTC](1), int64(1), object(8)
+memory usage: 42.2+ KB</code></pre>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>videos.groupby(by<span class="op">=</span>videos.published_at.dt.year).<span class="bu">sum</span>().plot(kind<span class="op">=</span><span class="st">&#39;bar&#39;</span>, figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">5</span>))</span></code></pre></div>
+<pre><code>&lt;AxesSubplot: xlabel=&#39;published_at&#39;&gt;</code></pre>
+<figure>
+<img src="final_files/final_61_1.png" alt="png" />
 <figcaption aria-hidden="true">png</figcaption>
 </figure>
 <div class="sourceCode" id="cb32"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>comment_df.hate_speech_score.mean()</span></code></pre></div>
-<pre><code>0.8822260307092021</code></pre>
+class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> videos[[<span class="st">&quot;published_at&quot;</span>, <span class="st">&quot;contains_toxic_indications&quot;</span>]].groupby(by<span class="op">=</span>[videos.published_at.dt.year ,videos.published_at.dt.month]).<span class="bu">sum</span>().plot(style<span class="op">=</span><span class="st">&#39;.-&#39;</span>, figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">5</span>), xlabel<span class="op">=</span><span class="st">&quot;published at&quot;</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="dv">32</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> videos.groupby(by<span class="op">=</span>[videos.published_at.dt.year ,videos.published_at.dt.month]).<span class="bu">sum</span>().contains_toxic_indications.to_list()</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> np.polyfit(x,y,<span class="dv">1</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> np.poly1d(z)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>ax.plot(x, p(x), linestyle<span class="op">=</span><span class="st">&quot;dashed&quot;</span>, label<span class="op">=</span><span class="st">&quot;trend&quot;</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">&quot;red&quot;</span>, label<span class="op">=</span><span class="st">&quot;2020 season&quot;</span>)</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">8</span>, color<span class="op">=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">10</span>, color<span class="op">=</span><span class="st">&quot;green&quot;</span>, label<span class="op">=</span><span class="st">&quot;2021 season&quot;</span>)</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">19</span>, color<span class="op">=</span><span class="st">&quot;green&quot;</span>)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">22</span>, color<span class="op">=</span><span class="st">&quot;orange&quot;</span>, label<span class="op">=</span><span class="st">&quot;2022 season&quot;</span>)</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">30</span>, color<span class="op">=</span><span class="st">&quot;orange&quot;</span>)</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>ax.legend()</span></code></pre></div>
+<pre><code>&lt;matplotlib.legend.Legend at 0x328fec5e0&gt;</code></pre>
+<figure>
+<img src="final_files/final_62_1.png" alt="png" />
+<figcaption aria-hidden="true">png</figcaption>
+</figure>
 <div class="sourceCode" id="cb34"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>comment_df.sentiment_score.mean()</span></code></pre></div>
-<pre><code>0.9551236870340416</code></pre>
-<h3 id="has-toxicity-risen-over-the-years">Has toxicity risen over the
-years?</h3>
-<div class="sourceCode" id="cb36"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>comment_df[<span class="st">&quot;contains_toxic_indications&quot;</span>] <span class="op">=</span> comment_df[[<span class="st">&quot;sentiment&quot;</span>, <span class="st">&quot;hate_speech_label&quot;</span>]].swifter.progress_bar(<span class="va">False</span>).<span class="bu">apply</span>(<span class="kw">lambda</span> r: <span class="dv">1</span> <span class="cf">if</span> r.sentiment <span class="op">!=</span> <span class="st">&quot;POSITIVE&quot;</span> <span class="kw">or</span> r.hate_speech_label <span class="op">!=</span> <span class="st">&quot;NON_HATE&quot;</span> <span class="cf">else</span> <span class="dv">0</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>grouped <span class="op">=</span> comment_df[[<span class="st">&quot;video_id&quot;</span>, <span class="st">&quot;contains_toxic_indications&quot;</span>]].groupby(by<span class="op">=</span><span class="st">&quot;video_id&quot;</span>).<span class="bu">sum</span>()</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>grouped.index <span class="op">=</span> grouped.index.astype(<span class="bu">str</span>)</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>videos.video_id <span class="op">=</span> videos.video_id.astype(<span class="bu">str</span>)</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>videos <span class="op">=</span> pd.merge(videos, grouped, left_on<span class="op">=</span><span class="st">&quot;video_id&quot;</span>, right_index<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>videos.published_at <span class="op">=</span> pd.to_datetime(videos.published_at)</span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>videos.info()</span></code></pre></div>
-<div class="sourceCode" id="cb37"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>videos.groupby(by<span class="op">=</span>videos.published_at.dt.year).<span class="bu">sum</span>().plot(kind<span class="op">=</span><span class="st">&#39;bar&#39;</span>, figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">5</span>))</span></code></pre></div>
-<pre><code>&lt;AxesSubplot: xlabel=&#39;published_at&#39;&gt;</code></pre>
-<figure>
-<img src="final_files/final_64_1.png" alt="png" />
-<figcaption aria-hidden="true">png</figcaption>
-</figure>
-<div class="sourceCode" id="cb39"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> videos[[<span class="st">&quot;published_at&quot;</span>, <span class="st">&quot;contains_toxic_indications&quot;</span>]].groupby(by<span class="op">=</span>[videos.published_at.dt.year ,videos.published_at.dt.month]).<span class="bu">sum</span>().plot(style<span class="op">=</span><span class="st">&#39;.-&#39;</span>, figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">5</span>), xlabel<span class="op">=</span><span class="st">&quot;published at&quot;</span>)</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="dv">32</span>)</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> videos.groupby(by<span class="op">=</span>[videos.published_at.dt.year ,videos.published_at.dt.month]).<span class="bu">sum</span>().contains_toxic_indications.to_list()</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> np.polyfit(x,y,<span class="dv">2</span>)</span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> np.poly1d(z)</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>ax.plot(x, p(x), linestyle<span class="op">=</span><span class="st">&quot;dashed&quot;</span>, label<span class="op">=</span><span class="st">&quot;trend&quot;</span>)</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">&quot;red&quot;</span>, label<span class="op">=</span><span class="st">&quot;2020 season&quot;</span>)</span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">8</span>, color<span class="op">=</span><span class="st">&quot;red&quot;</span>)</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">10</span>, color<span class="op">=</span><span class="st">&quot;green&quot;</span>, label<span class="op">=</span><span class="st">&quot;2021 season&quot;</span>)</span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">19</span>, color<span class="op">=</span><span class="st">&quot;green&quot;</span>)</span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">22</span>, color<span class="op">=</span><span class="st">&quot;orange&quot;</span>, label<span class="op">=</span><span class="st">&quot;2022 season&quot;</span>)</span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">31</span>, color<span class="op">=</span><span class="st">&quot;orange&quot;</span>)</span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>ax.legend()</span></code></pre></div>
-<pre><code>&lt;matplotlib.legend.Legend at 0x31fe85340&gt;</code></pre>
-<figure>
-<img src="final_files/final_65_1.png" alt="png" />
-<figcaption aria-hidden="true">png</figcaption>
-</figure>
-<div class="sourceCode" id="cb41"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>grouped.mean()</span></code></pre></div>
+class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>grouped.mean()</span></code></pre></div>
 <pre><code>contains_toxic_indications    52.708696
 dtype: float64</code></pre>
 <h3 id="is-toxicity-a-self-made-problem">Is toxicity a self-made
 problem?</h3>
-<div class="sourceCode" id="cb43"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>video_df_for_transformers <span class="op">=</span> videos.copy()</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>video_df_for_transformers[<span class="st">&quot;title&quot;</span>] <span class="op">=</span> video_df_for_transformers.title.swifter.<span class="bu">apply</span>(<span class="kw">lambda</span> text: preprocess(text))</span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>MODEL <span class="op">=</span> <span class="st">&quot;distilbert-base-uncased-finetuned-sst-2-english&quot;</span></span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>config <span class="op">=</span> AutoConfig.from_pretrained(MODEL)</span>
-<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(MODEL)</span>
-<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForSequenceClassification.from_pretrained(MODEL)</span>
-<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>label_list <span class="op">=</span> []</span>
-<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>score_list <span class="op">=</span> []</span>
-<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> tqdm(video_df_for_transformers.title.to_list()):</span>
-<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>    encoded_input <span class="op">=</span> tokenizer(text, return_tensors<span class="op">=</span><span class="st">&#39;pt&#39;</span>, padding<span class="op">=</span><span class="va">True</span>, truncation<span class="op">=</span><span class="va">True</span>, max_length<span class="op">=</span><span class="dv">512</span>)</span>
-<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> model(<span class="op">**</span>encoded_input)</span>
-<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> output[<span class="dv">0</span>][<span class="dv">0</span>].detach().numpy()</span>
-<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> softmax(scores)</span>
-<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a>    label_list.append(config.id2label[np.argsort(scores)[::<span class="op">-</span><span class="dv">1</span>][<span class="dv">0</span>]])</span>
-<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a>    score_list.append(<span class="bu">max</span>(scores))</span>
-<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a>videos[<span class="st">&quot;sentiment&quot;</span>] <span class="op">=</span> label_list</span>
-<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a>videos[<span class="st">&quot;sentiment_score&quot;</span>] <span class="op">=</span> score_list</span>
-<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a>videos</span></code></pre></div>
-<div class="sourceCode" id="cb44"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>relative_video_counts <span class="op">=</span> []</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>relative_video_counts.append((videos[<span class="st">&quot;sentiment&quot;</span>].swifter.progress_bar(<span class="va">False</span>).<span class="bu">apply</span>(<span class="kw">lambda</span> l: <span class="dv">1</span> <span class="cf">if</span> l <span class="op">!=</span> <span class="st">&quot;POSITIVE&quot;</span> <span class="cf">else</span> <span class="dv">0</span>).<span class="bu">sum</span>() <span class="op">*</span> <span class="dv">100</span>) <span class="op">/</span> <span class="bu">len</span>(videos))</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>relative_video_counts.append((videos[<span class="st">&quot;sentiment&quot;</span>].swifter.progress_bar(<span class="va">False</span>).<span class="bu">apply</span>(<span class="kw">lambda</span> l: <span class="dv">1</span> <span class="cf">if</span> l <span class="op">!=</span> <span class="st">&quot;NEGATIVE&quot;</span> <span class="cf">else</span> <span class="dv">0</span>).<span class="bu">sum</span>() <span class="op">*</span> <span class="dv">100</span>) <span class="op">/</span> <span class="bu">len</span>(videos))</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>columns <span class="op">=</span> [<span class="st">&quot;negative&quot;</span>, <span class="st">&quot;positive&quot;</span>]</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({</span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;relative_count&quot;</span>: relative_video_counts,</span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;columns&quot;</span>: columns</span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>}).plot(kind<span class="op">=</span><span class="st">&quot;bar&quot;</span>, x<span class="op">=</span><span class="st">&quot;columns&quot;</span>, title<span class="op">=</span><span class="st">&quot;Fraction of videos that positive/negative&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">5</span>))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>videos.comment_count <span class="op">=</span> videos.comment_count.astype(<span class="bu">int</span>)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>videos.like_count <span class="op">=</span> videos.like_count.astype(<span class="bu">int</span>)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> ax.twinx()</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>videos[[<span class="st">&quot;published_at&quot;</span>, <span class="st">&quot;comment_count&quot;</span>]].groupby(by<span class="op">=</span>[videos.published_at.dt.year ,videos.published_at.dt.month]).mean().plot(ax<span class="op">=</span>ax, style<span class="op">=</span><span class="st">&#39;.-&#39;</span>, xlabel<span class="op">=</span><span class="st">&quot;published at&quot;</span>, ylabel<span class="op">=</span><span class="st">&quot;average total comment count&quot;</span>)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>videos[[<span class="st">&quot;published_at&quot;</span>, <span class="st">&quot;like_count&quot;</span>]].groupby(by<span class="op">=</span>[videos.published_at.dt.year ,videos.published_at.dt.month]).mean().plot(ax<span class="op">=</span>ax2, style<span class="op">=</span><span class="st">&#39;.-&#39;</span>, xlabel<span class="op">=</span><span class="st">&quot;published at&quot;</span>, c<span class="op">=</span><span class="st">&quot;darkgreen&quot;</span>, ylabel<span class="op">=</span><span class="st">&quot;average total like count&quot;</span>)</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="dv">32</span>)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> videos.groupby(by<span class="op">=</span>[videos.published_at.dt.year ,videos.published_at.dt.month]).mean().comment_count.to_list()</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> np.polyfit(x,y,<span class="dv">2</span>)</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> np.poly1d(z)</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>ax.plot(x, p(x), linestyle<span class="op">=</span><span class="st">&quot;dashed&quot;</span>, label<span class="op">=</span><span class="st">&quot;trend&quot;</span>)</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">&quot;red&quot;</span>, label<span class="op">=</span><span class="st">&quot;2020 season&quot;</span>)</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">10</span>, color<span class="op">=</span><span class="st">&quot;green&quot;</span>, label<span class="op">=</span><span class="st">&quot;2021 season&quot;</span>)</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">22</span>, color<span class="op">=</span><span class="st">&quot;orange&quot;</span>, label<span class="op">=</span><span class="st">&quot;2022 season&quot;</span>)</span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>lns <span class="op">=</span> ax.get_lines() <span class="op">+</span> ax2.get_lines()</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>ax.legend(ax.get_lines() <span class="op">+</span> ax2.get_lines(), [l.get_label() <span class="cf">for</span> l <span class="kw">in</span> lns])</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">8</span>, color<span class="op">=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">19</span>, color<span class="op">=</span><span class="st">&quot;green&quot;</span>)</span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">30</span>, color<span class="op">=</span><span class="st">&quot;orange&quot;</span>)</span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>ax2.get_legend().remove()</span></code></pre></div>
+<figure>
+<img src="final_files/final_65_0.png" alt="png" />
+<figcaption aria-hidden="true">png</figcaption>
+</figure>
+<figure>
+<img src="images/F1_viewers.png" alt="F1 TV viewing figure" />
+<figcaption aria-hidden="true">F1 TV viewing figure</figcaption>
+</figure>
+<div class="sourceCode" id="cb37"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>video_df_for_transformers <span class="op">=</span> videos.copy()</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>video_df_for_transformers[<span class="st">&quot;title&quot;</span>] <span class="op">=</span> video_df_for_transformers.title.swifter.<span class="bu">apply</span>(<span class="kw">lambda</span> text: preprocess(text))</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>MODEL <span class="op">=</span> <span class="st">&quot;distilbert-base-uncased-finetuned-sst-2-english&quot;</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>config <span class="op">=</span> AutoConfig.from_pretrained(MODEL)</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(MODEL)</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForSequenceClassification.from_pretrained(MODEL)</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>label_list <span class="op">=</span> []</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>score_list <span class="op">=</span> []</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> tqdm(video_df_for_transformers.title.to_list()):</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>    encoded_input <span class="op">=</span> tokenizer(text, return_tensors<span class="op">=</span><span class="st">&#39;pt&#39;</span>, padding<span class="op">=</span><span class="va">True</span>, truncation<span class="op">=</span><span class="va">True</span>, max_length<span class="op">=</span><span class="dv">512</span>)</span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> model(<span class="op">**</span>encoded_input)</span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> output[<span class="dv">0</span>][<span class="dv">0</span>].detach().numpy()</span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> softmax(scores)</span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>    label_list.append(config.id2label[np.argsort(scores)[::<span class="op">-</span><span class="dv">1</span>][<span class="dv">0</span>]])</span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>    score_list.append(<span class="bu">max</span>(scores))</span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a>videos[<span class="st">&quot;sentiment&quot;</span>] <span class="op">=</span> label_list</span>
+<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a>videos[<span class="st">&quot;sentiment_score&quot;</span>] <span class="op">=</span> score_list</span>
+<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a>videos</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>relative_video_counts <span class="op">=</span> []</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>relative_video_counts.append((videos[<span class="st">&quot;sentiment&quot;</span>].swifter.progress_bar(<span class="va">False</span>).<span class="bu">apply</span>(<span class="kw">lambda</span> l: <span class="dv">1</span> <span class="cf">if</span> l <span class="op">!=</span> <span class="st">&quot;POSITIVE&quot;</span> <span class="cf">else</span> <span class="dv">0</span>).<span class="bu">sum</span>() <span class="op">*</span> <span class="dv">100</span>) <span class="op">/</span> <span class="bu">len</span>(videos))</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>relative_video_counts.append((videos[<span class="st">&quot;sentiment&quot;</span>].swifter.progress_bar(<span class="va">False</span>).<span class="bu">apply</span>(<span class="kw">lambda</span> l: <span class="dv">1</span> <span class="cf">if</span> l <span class="op">!=</span> <span class="st">&quot;NEGATIVE&quot;</span> <span class="cf">else</span> <span class="dv">0</span>).<span class="bu">sum</span>() <span class="op">*</span> <span class="dv">100</span>) <span class="op">/</span> <span class="bu">len</span>(videos))</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>columns <span class="op">=</span> [<span class="st">&quot;negative&quot;</span>, <span class="st">&quot;positive&quot;</span>]</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;relative_count&quot;</span>: relative_video_counts,</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;columns&quot;</span>: columns</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>}).plot(kind<span class="op">=</span><span class="st">&quot;bar&quot;</span>, x<span class="op">=</span><span class="st">&quot;columns&quot;</span>, title<span class="op">=</span><span class="st">&quot;Fraction of videos that positive/negative&quot;</span>)</span></code></pre></div>
 <pre><code>&lt;AxesSubplot: title={&#39;center&#39;: &#39;Fraction of videos that positive/negative&#39;}, xlabel=&#39;columns&#39;&gt;</code></pre>
+<figure>
+<img src="final_files/final_68_1.png" alt="png" />
+<figcaption aria-hidden="true">png</figcaption>
+</figure>
+<div class="sourceCode" id="cb40"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>videos[[<span class="st">&quot;sentiment&quot;</span>, <span class="st">&quot;contains_toxic_indications&quot;</span>]].groupby(<span class="st">&quot;sentiment&quot;</span>).mean().plot(kind<span class="op">=</span><span class="st">&quot;bar&quot;</span>, title<span class="op">=</span><span class="st">&quot;Average Toxic Indication Count per Video Sentiment&quot;</span>)</span></code></pre></div>
+<pre><code>&lt;AxesSubplot: title={&#39;center&#39;: &#39;Average Toxic Indication Count per Video Sentiment&#39;}, xlabel=&#39;sentiment&#39;&gt;</code></pre>
 <figure>
 <img src="final_files/final_69_1.png" alt="png" />
 <figcaption aria-hidden="true">png</figcaption>
 </figure>
-<div class="sourceCode" id="cb46"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>videos[[<span class="st">&quot;sentiment&quot;</span>, <span class="st">&quot;contains_toxic_indications&quot;</span>]].groupby(<span class="st">&quot;sentiment&quot;</span>).mean().plot(kind<span class="op">=</span><span class="st">&quot;bar&quot;</span>, title<span class="op">=</span><span class="st">&quot;Average Toxic Indication Count per Video Sentiment&quot;</span>)</span></code></pre></div>
-<pre><code>&lt;AxesSubplot: title={&#39;center&#39;: &#39;Average Toxic Indication Count per Video Sentiment&#39;}, xlabel=&#39;sentiment&#39;&gt;</code></pre>
-<figure>
-<img src="final_files/final_70_1.png" alt="png" />
-<figcaption aria-hidden="true">png</figcaption>
-</figure>
+<h2 id="result-validity">Result Validity</h2>
+<div class="sourceCode" id="cb42"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>comment_df.sentiment_score.mean()</span></code></pre></div>
+<pre><code>0.9551236870340416</code></pre>
+<div class="sourceCode" id="cb44"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>comment_df.hate_speech_score.mean()</span></code></pre></div>
+<pre><code>0.8822260307092021</code></pre>
+<h2 id="conclusion">Conclusion</h2>
 <h2 id="bibliography">Bibliography</h2>
 <!--
 
@@ -1280,7 +1378,7 @@ os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs
     [NbConvertApp] Making directory final_files
     [NbConvertApp] Making directory final_files
     [NbConvertApp] Making directory final_files
-    [NbConvertApp] Writing 50621 bytes to final.md
+    [NbConvertApp] Writing 50861 bytes to final.md
     [WARNING] This document format requires a nonempty <title> element.
       Defaulting to 'final' as the title.
       To specify a title, use 'title' in metadata or --metadata title="...".
@@ -1296,6 +1394,12 @@ os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs
 -->
 <div id="refs" class="references csl-bib-body hanging-indent"
 data-line-spacing="2" role="doc-bibliography">
+<div id="ref-f1_drivers_addressing_toxic_fans" class="csl-entry"
+role="doc-biblioentry">
+<em>3 times <span>F1</span> drivers addressed toxic fan behavior</em>.
+(n.d.). Retrieved January 7, 2023, from <a
+href="https://www.sportskeeda.com/f1/3-times-f1-drivers-addressed-toxic-fan-behavior">https://www.sportskeeda.com/f1/3-times-f1-drivers-addressed-toxic-fan-behavior</a>
+</div>
 <div id="ref-hate_speech_classifier" class="csl-entry"
 role="doc-biblioentry">
 Aluru, S. S., Mathew, B., Saha, P., &amp; Mukherjee, A. (2020). <em>Deep
@@ -1360,6 +1464,13 @@ role="doc-biblioentry">
 Proctor, W., &amp; Kies, B. (2018). <em>Editors’
 <span>Introduction</span>: <span>On</span> toxic fan practices and the
 new culture wars</em>. <em>15</em>(1).
+</div>
+<div id="ref-richards_fia_2022" class="csl-entry"
+role="doc-biblioentry">
+Richards, G. (2022). <span>FIA</span> report blames <span>“human
+error”</span> for <span>Abu</span> <span>Dhabi</span> <span>GP</span>
+controversy but result stands. <em>The Guardian</em>. <a
+href="https://www.theguardian.com/sport/2022/mar/19/fia-report-blames-human-error-for-abu-dhabi-gp-controversy-but-result-stands">https://www.theguardian.com/sport/2022/mar/19/fia-report-blames-human-error-for-abu-dhabi-gp-controversy-but-result-stands</a>
 </div>
 <div id="ref-sst-2" class="csl-entry" role="doc-biblioentry">
 Socher, R., Perelygin, A., Wu, J., Chuang, J., Manning, C. D., Ng, A.,
