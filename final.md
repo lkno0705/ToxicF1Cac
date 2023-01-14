@@ -565,6 +565,7 @@ As shown in the plot, on average across all categorys tested, with all tests bei
 In summary, every 5th comment shows clear indications for toxic content, with 60% percent of comments being negative. Therefore, one could make the assumption that Formula 1 fandom is indeed toxic, especially because of the frequency that one can observe comments with toxic behaviour. However, the situation is not as bad on social media as reports might suggest. The overall current negativity in Formula 1 fandom is amplifying the perception of toxicity in Formula 1 fandom as most people connect toxic behaviour not just with racism, misogyny and hate speech but rather with overall negative behaviour [@toxic_fandom]. Therefore, most people will consider current Formula 1 fandom as toxic, especially paired with recent reports of toxic and abusive behaviour during events and online [@f1_drivers_addressing_toxic_fans] [@woodhouse_scary_2022].
 
 ### Has toxicity risen over the years?
+In order to conclude if Formula 1 fandom got more toxic in recent years, the number of toxic indications per year will be analyzed.
 
 
 ```python
@@ -576,25 +577,6 @@ videos = pd.merge(videos, grouped, left_on="video_id", right_index=True)
 videos.published_at = pd.to_datetime(videos.published_at)
 videos.info()
 ```
-
-    <class 'pandas.core.frame.DataFrame'>
-    Int64Index: 491 entries, 0 to 491
-    Data columns (total 10 columns):
-     #   Column                      Non-Null Count  Dtype              
-    ---  ------                      --------------  -----              
-     0   video_id                    491 non-null    object             
-     1   title                       491 non-null    object             
-     2   description                 491 non-null    object             
-     3   channel                     491 non-null    object             
-     4   published_at                491 non-null    datetime64[ns, UTC]
-     5   tags                        487 non-null    object             
-     6   like_count                  491 non-null    object             
-     7   favorite_count              491 non-null    object             
-     8   comment_count               491 non-null    object             
-     9   contains_toxic_indications  491 non-null    int64              
-    dtypes: datetime64[ns, UTC](1), int64(1), object(8)
-    memory usage: 42.2+ KB
-
 
 
 ```python
@@ -614,50 +596,7 @@ videos.groupby(by=videos.published_at.dt.year).sum().plot(kind='bar', figsize=(8
     
 
 
-
-```python
-ax = videos[["published_at", "contains_toxic_indications"]].groupby(by=[videos.published_at.dt.year ,videos.published_at.dt.month]).sum().plot(style='.-', figsize=(10,5), xlabel="published at")
-x = np.arange(32)
-y = videos.groupby(by=[videos.published_at.dt.year ,videos.published_at.dt.month]).sum().contains_toxic_indications.to_list()
-z = np.polyfit(x,y,1)
-p = np.poly1d(z)
-ax.plot(x, p(x), linestyle="dashed", label="trend")
-ax.axvline(0, color="red", label="2020 season")
-ax.axvline(8, color="red")
-ax.axvline(10, color="green", label="2021 season")
-ax.axvline(19, color="green")
-ax.axvline(22, color="orange", label="2022 season")
-ax.axvline(30, color="orange")
-ax.legend()
-```
-
-
-
-
-    <matplotlib.legend.Legend at 0x328fec5e0>
-
-
-
-
-    
-![png](final_files/final_62_1.png)
-    
-
-
-
-```python
-grouped.mean()
-```
-
-
-
-
-    contains_toxic_indications    52.708696
-    dtype: float64
-
-
-
-### Is toxicity a self-made problem?
+As shwon in the Figure above, the overall number of comments with toxic indications have risen drastically over the years. Jumping from around 3.500 comments with toxic indications to around 18.000 comments with toxic indications. This marks an increase of over 500%, or in other words, the amount of comments with toxic ambivalences have **quintupled**. This figure becomes even more alarming if the data in the following figure is taken into consideration as well.
 
 
 ```python
@@ -685,86 +624,69 @@ ax2.get_legend().remove()
 
 
     
-![png](final_files/final_65_0.png)
+![png](final_files/final_63_0.png)
     
 
+
+The figure shows the amount of comments and likes each video got over the past 2 years. The comment count and like count together, can be seen as an indicator about how much attention and interaction each video got. As shown in the figure by the blue and green line, the curve of the amount of comments and likes are almost identical, with the yellow trend line showing a clear negative or decreasing trend, that is becoming shallower towards the end. With the data about the amount of toxic indications in comments per year, this data paints an alarming picture, as toxicity in comments quintupled, while the overall interactions and attentions each video got has been declining to around 21% of its level from the beginning of the 2020 season. This indicates, that the relative amount of toxicity in Formula 1 Fandom could be even higher then displayed through the dataset.
+In summary then, Toxicity in Formula 1 Fandom has been rising, especially between 2021 and 2022, with the trend line predicting an increase for the future as well, as depicted by the following figure.
+
+
+```python
+ax = videos[["published_at", "contains_toxic_indications"]].groupby(by=[videos.published_at.dt.year ,videos.published_at.dt.month]).sum().plot(style='.-', figsize=(10,5), xlabel="published at")
+x = np.arange(32)
+y = videos.groupby(by=[videos.published_at.dt.year ,videos.published_at.dt.month]).sum().contains_toxic_indications.to_list()
+z = np.polyfit(x,y,1)
+p = np.poly1d(z)
+ax.plot(x, p(x), linestyle="dashed", label="trend")
+ax.axvline(0, color="red", label="2020 season")
+ax.axvline(8, color="red")
+ax.axvline(10, color="green", label="2021 season")
+ax.axvline(19, color="green")
+ax.axvline(22, color="orange", label="2022 season")
+ax.axvline(30, color="orange")
+ax.legend()
+```
+
+
+
+
+    <matplotlib.legend.Legend at 0x328fec5e0>
+
+
+
+
+    
+![png](final_files/final_65_1.png)
+    
+
+
+
+```python
+grouped.mean()
+```
+
+
+
+
+    contains_toxic_indications    52.708696
+    dtype: float64
+
+
+
+### Is toxicity a self-made problem?
+
+Whether toxicity is a self-made problem of Formula 1 is hard to reason about. However, Formula 1 is a public company, that makes money based on sponsorships, advertising and viewing numbers [@formula_1_limited_company_profile]. Therefore, it is essential for Formula 1 to keep the amount of entertainment and interactions high, as well as having an increasingly large fan base or fandom. However, as shown in the following figure [@noauthor_tv_nodate], the amount of viewers were steadily decreasing from 2011 to 2017. During this time Formula 1 entered a new era of technical regulations, which has been called the hybrid era, which has been dominated by Mercedes AMG Petronas for seven consecutive years.
 
 ![F1 TV viewing figure](images/F1_viewers.png)
 
-
-```python
-from tqdm import tqdm
-
-video_df_for_transformers = videos.copy()
-video_df_for_transformers["title"] = video_df_for_transformers.title.swifter.apply(lambda text: preprocess(text))
-
-MODEL = "distilbert-base-uncased-finetuned-sst-2-english"
-config = AutoConfig.from_pretrained(MODEL)
-tokenizer = AutoTokenizer.from_pretrained(MODEL)
-
-model = AutoModelForSequenceClassification.from_pretrained(MODEL)
-
-label_list = []
-score_list = []
-
-for text in tqdm(video_df_for_transformers.title.to_list()):
-    encoded_input = tokenizer(text, return_tensors='pt', padding=True, truncation=True, max_length=512)
-    output = model(**encoded_input)
-    scores = output[0][0].detach().numpy()
-    scores = softmax(scores)
-    label_list.append(config.id2label[np.argsort(scores)[::-1][0]])
-    score_list.append(max(scores))
-
-videos["sentiment"] = label_list
-videos["sentiment_score"] = score_list
-videos
-```
-
-
-```python
-relative_video_counts = []
-relative_video_counts.append((videos["sentiment"].swifter.progress_bar(False).apply(lambda l: 1 if l != "POSITIVE" else 0).sum() * 100) / len(videos))
-relative_video_counts.append((videos["sentiment"].swifter.progress_bar(False).apply(lambda l: 1 if l != "NEGATIVE" else 0).sum() * 100) / len(videos))
-columns = ["negative", "positive"]
-
-pd.DataFrame({
-    "relative_count": relative_video_counts,
-    "columns": columns
-}).plot(kind="bar", x="columns", title="Fraction of videos that positive/negative")
-```
-
-
-
-
-    <AxesSubplot: title={'center': 'Fraction of videos that positive/negative'}, xlabel='columns'>
-
-
-
-
-    
-![png](final_files/final_68_1.png)
-    
-
-
-
-```python
-videos[["sentiment", "contains_toxic_indications"]].groupby("sentiment").mean().plot(kind="bar", title="Average Toxic Indication Count per Video Sentiment")
-```
-
-
-
-
-    <AxesSubplot: title={'center': 'Average Toxic Indication Count per Video Sentiment'}, xlabel='sentiment'>
-
-
-
-
-    
-![png](final_files/final_69_1.png)
-    
-
+Which lead many people to leave the sport, as a lot of the entertainment factor was missing. Which lead to Formula hitting an all time low in 2017. As a result to that worrying development, in 2017 Formula 1 signed an aggressive exclusivity deal with Netflix for an exclusive documentary reality show called "Drive to Survive" which should portray the amount of controversy, excitement and high class racing that Formula 1 is, while simultaneously showing off exclusive behind the scenes content and making Formula 1 more accessible by the average Netflix viewer [@goodman_why_2022]. The first season that aired on Netflix was an instant hit and lead to a surge in Formula 1s popularity across the globe, as reflected in the data showed in the figure above. The series was especially successfull in the USA, as Formula 1 never really got a foothold in the USA in the past, the series lead to F1s popularity skyrocketing. ESPNs F1 viewing figures increaed by 170% (from approx. 550.000 to 935.000) [@goodman_why_2022] and the 2022 American Grand Prix breaking the record for the highest amount of spectators ever recorded [@noauthor_formula_nodate]. However, as the seasons progressed, the series became more and more a reality show about Formula 1 and the documentary aspect moved more and more in the background. As a result, many controversies, rivalrys and aspects of the sport are now artificially amplified, not fully narrated or told in a queer and distorded way and sometimes it goes as far as artificially creating rivalries where there never has been any [@milburn_heres_2020]. Which lead to a rivalry between old Formula 1 fans and the new ones attracted by drive to survive but also between Fans of different teams and drivers. Also the term "DTS fan" which is an abbreviation for a fan that is following F1 because of Drive to Survive becoming a common insult in Formula 1 fandom for fans making assumptions that are not true or just don't fit into an older fans perspective of the sport.
+In addition to that, decisions and actions of the governing body of Formula 1, the FIA became more and more questionable since 2021 [@richards_fia_2022], with a prime example, that is still discussed a lot today, being the championship decider in 2021. During this race, a late safety car lead to a lot of controversy, as the race director "interpreted" the a rule which stated that "any" lapped cars must over take the safety car to unlap themself and allow for a clean restart. However, in order to allow for one lap of thrilling and exciting racing, the race director only allowed the cars between the championship rivals to unlap themself and restarted the race afterwards. This allowed Max Verstappen to overtake Lewis Hamilton and secure his first ever drivers championship. Many similar incidents and inconsistencies from the governing body in regards to race decisions followed [@noauthor_fia_nodate]. This lead not only to an increasing rivalry between fans of different teams and drivers, but also to a lot of fans attacking the FIA.
+In summary then, is the Toxicity in Formula 1 Fandom a self-made problem? Well, one could certainly argue that it is. Formula 1 as a corporation needs the amount of entertainment and attention, controversies create. The same applies to Drive to Survive. Formula 1 needs Drive to Survive to draw more people into the sport and to reach its key performance indicators. The toxicity in Formula 1 fandom is just a side effect of the strategies Formula 1 is following. In addition to that, Formula 1 is becoming more and more political with campaigns against racism, or for environmentally friendly programs, which adds another friction point between fans if they don't agree with portrayed political views.
 
 ## Result Validity
+
+The results are only valid for the given dataset, which has been shown to have its limitations, as presented earlier. The transformer predictions have an average of 88% - 95% certainty. Therefore, the likelihood of the predictions being correct is quite high.
 
 
 ```python
@@ -790,7 +712,13 @@ comment_df.hate_speech_score.mean()
 
 
 
+However, the dictionary results contain a lot of False positives, as words of the dictionary are overlapping with Formula 1 domain language. For example mick is a word of the toxic words dictionary but it is also the name of a driver for the HAAS Formula 1 team. As a consequence, every comment that is about Mick Schumacher is automatically flagged as toxic. The same applies for some of the categories of the grievance dictionary. As explained in the result section, crashes and dangerous incidents are part of the sport. Therefore verbalizations about god, or death are really common as they can also express relief that a driver didn't die.
+
+In addition to that, I, as the authot of this report, certainly have biased opinions on some of the discussed topics myself. As I am part of Formula 1 fandom and a Redbull Racing supporter. Because of that, an unbiased review of comment classification with toxic indications by unbiased annotators should be conducted in the future.
+
 ## Conclusion
+
+In this thesis, the toxicity in Formula 1 has been analysed based on a custom dataset of 40200 comments from 500 videos of the official Formula 1 Youtube channel. First the fundamentals about what fandom and toxic behaviour is have been layed out. After that, the dataset creation process has been presented. Then the three dictionarys used, along with the dictionary analysis method have been shown. In addition to that, two transformer classifiers have been applied to the dataset in order to detect comment sentiment and hate speech in comments. The results showed, that on average every 5th comment in the dataset contained toxic indications which are often connected to life threatening and hateful behaviour, which concluded the first research question, as Formula 1 Fandom was deemed to be toxic. Following this discussion, it has been analyzed if Toxicity in Formula 1 Fandom has risen over the years. The results showed, that the amount of comments with toxic indications quintupled from 2020 to 2022, while simultaneously the videos were receiving less interactions. This marks a dark future for Formula 1 and Formula 1 Fandom, as the trend curves are both predicting a similar picture for the future. Last but not least, it has been discussed if toxicity in Formula 1 Fandom is a self-made problem of Formula 1. It has been argued, that indeed Formula 1s strategy to fan and economic growth, paired with the increasing amount of political topics addressed by Formula 1 are certainly playing a role in the rise of toxicity and may well be one of the reason. Therefore it was concluded, that yes toxicity is (at least partially) a self-made problem.
 
 ## Bibliography
 
@@ -812,8 +740,7 @@ os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs
     [NbConvertApp] Making directory final_files
     [NbConvertApp] Making directory final_files
     [NbConvertApp] Making directory final_files
-    [NbConvertApp] Making directory final_files
-    [NbConvertApp] Writing 50861 bytes to final.md
+    [NbConvertApp] Writing 57026 bytes to final.md
     [WARNING] This document format requires a nonempty <title> element.
       Defaulting to 'final' as the title.
       To specify a title, use 'title' in metadata or --metadata title="...".
