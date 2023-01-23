@@ -3,6 +3,8 @@ Author: Leon Knorr
 
 Matr-Nr: 1902854
 
+Github: [https://github.com/lkno0705/ToxicF1Cac](https://github.com/lkno0705/ToxicF1Cac)
+
 ## Disclaimer
 In order to use Citations in Jupyter Notebook, the whole Notebook has to be converted to markdown and after that, the markdown file has to be compiled with LATEX and the bibliography and bibliography style is injected. Because of that Citations and the bibliography are only visible in the PDF version of the notebook. However because comments contain emojis, and other special characters, the output of each code cell has to be cleared before the notebook is converted otherwise the pdf compile will fail. In addition to that the formating of the code cells in the pdf document is not necessarily perfect. As a result, Citations and bibliography will only be correctly visible in the PDF version, where as code and its output is only visible in the notebook source.
 
@@ -690,7 +692,7 @@ os.system("pandoc -s final.md -t html -o final.html --citeproc --bibliography=re
     [NbConvertApp] Making directory final_files
     [NbConvertApp] Making directory final_files
     [NbConvertApp] Making directory final_files
-    [NbConvertApp] Writing 61232 bytes to final.md
+    [NbConvertApp] Writing 61131 bytes to final.md
     [WARNING] This document format requires a nonempty <title> element.
       Defaulting to 'final' as the title.
       To specify a title, use 'title' in metadata or --metadata title="...".
