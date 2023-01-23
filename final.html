@@ -246,52 +246,6 @@
   <![endif]-->
 </head>
 <body>
-<!--
-
-# Final Report - Work in Progress
-- Research Hypothesis / Questions:
-    - Is Formula 1 fandom Toxic?
-    - Are there specific groups that show more toxic behaviour then others?
-    - Is the toxicity a "self-made" problem of Formula 1?
-- APIs: Youtube
-    - (Not reddit as post are often off topic especially during the off season, that we are currently in)
-- Methods:
-    - TBD
-    - Dictionary
-        - Formula 1 specific words that are toxic
-        - racism / ethnic slurs -> [@ethnic_slurs]
-        - toxicity -> [@orthrus-lexicon_orthrus_2022]
-        - hate speech -> [@van_der_vegt_grievance_2021]
-        - insults -> [@van_der_vegt_grievance_2021]
-    - Transformer classifier
-        - sentiment -> cardiffnlp/twitter-roberta-base-sentiment-latest [@tweet_sentiment_classifier]
-        - hate speech -> Hate-speech-CNERG/dehatebert-mono-english [@racism_classifier]
-    - statistical analysis
-        - group toxic behavior by drivers and teams
-        - group by topics
-            - topic modelling?
-- Contents:
-    - Introduction
-        - What is Formula 1
-        - Why do we need to analyze this
-        - introduce the three research questions / hypothesis
-    - Fundamentals
-        - Formula 1
-        - What is fandom
-          - 
-        - Defining toxic fan behavior
-        - Youtube API
-        - Maybe explaining the used methods?
-    - Concept
-        - What will be done
-        - How will i be doing it
-    - Creating the Dataset
-        - Explain Dataset creation
-    - Applying Method 1
-    - Applying Method 2
-    - Results
-
--->
 <h1
 id="analysing-toxicity-in-formula-1-fandom---computational-analysis-of-communications-final">Analysing
 Toxicity in Formula 1 Fandom - Computational Analysis of Communications
@@ -334,21 +288,19 @@ data-cites="woodhouse_scary_2022">(Woodhouse, 2022)</span>. As the
 reports over toxic and abusive fan behaviours in social media and at
 live events are rising, Formula 1 as well as Fans and drivers are taking
 a stand against toxicity in the Formula 1 community. However, an
-independent and scientific analysis of this topic is missing and
-therefore the accusations are sort of hanging in the air without a solid
-scientific foundation. Therefore, in order to tackle this problem
-research into the toxicity of Formula 1 fandom is a necassety to gain
-valuable insights into understanding the problem, where it originates
-from and to build a foundation for future measures to make attending
-Formula 1 events as well as the media around it a safer and more
-enjoyable experience. To take the first step into this direction, this
-thesis will analyse Youtube comments of the Formula 1 channel in order
-to determine:</p>
+independent and scientific analysis of this topic is missing and Because
+of that, the accusations are sort of “hanging in the air” without a
+solid scientific foundation. Therefore, research into the toxicity of
+Formula 1 fandom is a necassety to gain valuable insights into
+understanding the problem, where it originates from and to build a
+foundation for future measures to make attending Formula 1 events as
+well as the media around it a safer and more enjoyable experience. To
+take the first step into this direction, this thesis will analyse
+Youtube comments of the Formula 1 channel in order to determine:</p>
 <ul>
-<li>If the Formula 1 fandom is toxic</li>
-<li>Has Toxicity risen over the years?</li>
-<li>Is the toxicity a “self-made” problem of Formula 1 and where is the
-toxicity originating from?</li>
+<li>Is Formula 1 Fandom Toxic?</li>
+<li>Has toxicity risen over the years?</li>
+<li>Is Toxicity in Formula 1 a self-made problem?</li>
 </ul>
 <h2 id="fundamentals">Fundamentals</h2>
 <p>In this chapter the necessary fundamental knowledge is presented.</p>
@@ -390,32 +342,31 @@ members of the community are called fans, which is a short form of
 fanatic about a popular narrative or text such as a tv series, movie
 franchise or sports.</p>
 <p>Becoming a fan starts with the adoption of a fan identity about a fan
-object, thus fandom can be a powerful of defining the self. The fan
+object, thus fandom can be a powerful way of defining the self. The fan
 object can be anything that people can be fanatic about, this may be a
 simple object such as trains or a virtual asset such as a movie
 franchise. Therefore, by taking part in a fandom, people are expressing
 themselfs through an identity they’ve chosen for themselfs. As a result,
 fans may lead to see the fan object as an extension of themselfs and
-thus react personally threatened if the fan object is facing a threat
-such as accusations etc <span class="citation"
+thus, react personally threatened if the fan object is facing a threat
+such as accusations <span class="citation"
 data-cites="toxic_fandom">(<span>“What <span>Is</span>
 <span>Toxic</span> <span>Fandom</span>?”</span> n.d.)</span>. In
 addition to creating a strong part of their own identity, fans feel more
-connected or socialised through their fandom, as studies indicate, that
+connected or socialised through their fandom. Studies indicate, that
 even if fans don’t interact with other members of a fan community, they
 still perceive themselfs as part of that community. Because of that,
 fans not only become personally invested in their fandom, they become
 socially invested as well <span class="citation"
 data-cites="toxic_fandom">(<span>“What <span>Is</span>
 <span>Toxic</span> <span>Fandom</span>?”</span> n.d.)</span>.</p>
-<p>As a result of the strong connection fans build up to their fan
-object, the time-frame in which this self identity has been chosen is
-also playing a role. As an example, many people build a fandom in their
+<p>The time-frame in which the fan self identity has been chosen is also
+playing a role. As an example, many people build a fandom in their
 childhood about a tv series, franchise or sport, this often leads to
 them feeling entitled to having their fan object preserved as they deem
 acceptable. This behaviour is also called fan entitlement. A good
-example for this behaviour are the news movies and series in the Lord of
-the Rings and Star Wars franchises, as most fan communities of these
+example for this behaviour are the newest movies and series in the Lord
+of the Rings and Star Wars franchises, as most fan communities of these
 franchises have been outraged about the new characters and story lines,
 where many people claimed that this “ruined their childhood” <span
 class="citation" data-cites="toxic_fandom">(<span>“What <span>Is</span>
@@ -436,27 +387,27 @@ data-cites="toxic_fandom">(<span>“What <span>Is</span>
 this behaviour can be observed online in social media, there are however
 reports of toxic behaviour in real-life as well, such as abusive
 behaviour at events.</p>
-<p>The word toxic itself however is defined as “of relating to, or
-caused by a toxin,” “of the nature of a poison; poisonous” <span
+<p>The word toxic itself is defined as “of relating to, or caused by a
+toxin,” “of the nature of a poison; poisonous” <span class="citation"
+data-cites="arouh_toxic_2020">(Arouh, 2020)</span>. This definition
+originates from medival latin, where it refers to poisoned arrows or to
+being imbued with poison. Following this definition, it is an
+<em>external</em> substance that is toxic and not a person or their
+behaviour. However in recent years the understanding of this definition
+has shifted, today someones actions or the emotions experienced or types
+of character are now understood as poisonous or “toxic” <span
 class="citation" data-cites="arouh_toxic_2020">(Arouh, 2020)</span>.
-This definition originally originates from medival latin, where it
-refers to poisoned arrows or to being imbued with poison. Following this
-definition, it is an <em>external</em> substance that is toxic and not a
-person or their behaviour. However in recent years the understanding of
-this definition has shifted, today someones actions or the emotions
-experienced or types of character are now understood as poisonous or
-“toxic” <span class="citation" data-cites="arouh_toxic_2020">(Arouh,
-2020)</span>. This definition is closely related to the definition of
-the word fan, as explained earlier, fan originates from fanatic, which
-is traditionally linked to madness and demonic posession. This
-traditional and long obselete link is often exploited by media outlets
-to mark fans as psychopaths whose frustrated fantasies of intimate
-relationships or unsatisfied desires with the fan object take violent
-and ant-social forms <span class="citation"
-data-cites="arouh_toxic_2020">(Arouh, 2020)</span>. In order to maintain
-this hypothesis, media often picks the most miserable and negative or
-“click-bait” examples of fan behaviour, as it creates the most attention
-and keeps the viewing figures high <span class="citation"
+This definition is closely related to the definition of the word fan, as
+explained earlier, fan originates from fanatic, which is traditionally
+linked to madness and demonic posession. This traditional and long
+obselete link is often exploited by media outlets to mark fans as
+psychopaths whose frustrated fantasies of intimate relationships or
+unsatisfied desires with the fan object take violent and anti-social
+forms <span class="citation" data-cites="arouh_toxic_2020">(Arouh,
+2020)</span>. In order to maintain this hypothesis, the media often
+picks the most miserable and negative or “click-bait” examples of fan
+behaviour, as it creates the most attention and keeps the viewing
+figures high <span class="citation"
 data-cites="arouh_toxic_2020">(Arouh, 2020)</span>, <span
 class="citation" data-cites="proctor_editors_2018">(Proctor &amp; Kies,
 2018)</span>. These circumstances are additionally amplified by social
@@ -479,21 +430,23 @@ by current political circumstances where they feel a feeling of
 disempowerment at their loss of priviliged status in society because of
 gender discussions or woman rights movements. Thus toxic fans are often
 painted as angry white, heterosexual men or members of the “alt-right”
-community. However in many cases, fan communities are used as a
-plattform to spread this hatered or ideological ideas because it creates
-a lot of attention in social networks as well as from the media. The
-media then progresses to paint fandom and online culture as more and
-more toxic because it creates “maximum cultural penetration” <span
-class="citation" data-cites="proctor_editors_2018">(Proctor &amp; Kies,
-2018)</span>. This trend has led to the phenomenon of <em>progressive
-toxicity</em>, where other fans “rush to prove one’s moral superiority
-by speaking out against some racist, sexist or otherwise hurtful
-sentiment, the sentiment is often amplified on a scale that wouldn’t
-have been possible had people not taken the bait” <span class="citation"
+community <span class="citation"
 data-cites="proctor_editors_2018">(Proctor &amp; Kies, 2018)</span>.
-This rush to prove morally better than the toxic other often leads to
+However in many cases, fan communities are used as a plattform to spread
+this hatered or ideological ideas because it creates a lot of attention
+in social networks as well as from the media. The media then progresses
+to paint fandom and online culture as more and more toxic because it
+creates “maximum cultural penetration” <span class="citation"
+data-cites="proctor_editors_2018">(Proctor &amp; Kies, 2018)</span>.
+This trend has led to the phenomenon of <em>progressive toxicity</em>,
+where other fans “rush to prove one’s moral superiority by speaking out
+against some racist, sexist or otherwise hurtful sentiment, the
+sentiment is often amplified on a scale that wouldn’t have been possible
+had people not taken the bait” <span class="citation"
+data-cites="proctor_editors_2018">(Proctor &amp; Kies, 2018)</span>.
+This rush to prove morally superior than the toxic other often leads to
 toxic behavior by the defender itself. Because of that, toxic practices
-more and more frequently are instantiations of larger political or
+are more and more frequently instantiations of larger political or
 cultural polarizations and they depict the current socio-political
 climate. Thus toxic fan behaviour is often observed as a conlflict
 between the “political correct” pro-diversity crowd, which are also
@@ -529,7 +482,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a hr
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>api_key <span class="op">=</span> api_keys[<span class="st">&quot;YOUTUBE_API_KEY&quot;</span>]</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>max_results <span class="op">=</span> <span class="dv">1000</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>youtube_api <span class="op">=</span> googleapiclient.discovery.build(api_service_name, api_version, developerKey <span class="op">=</span> api_key)</span></code></pre></div>
-<p>Now request to the Youtube API V3 can be made. Before we can scrape
+<p>Now requests to the Youtube API V3 can be made. Before we can scrape
 comments, the video id of the video that comments want to be obtain from
 is needed. Therefore, data about all videos since 2020 until now are
 requested. However the api will only retrieve 50 items per request, if
@@ -584,7 +537,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a hr
 actual comments and replys can be requested. In order to achieve this,
 for every video id that has been retrieved earlier, a list of 15 comment
 threads is requested. Every comment thread consists of a topcomment,
-that has a number of replys associated with it. Because of the maximum
+that has a number of replies associated with it. Because of the maximum
 quota of 10000 request units per day, for each video only 15 comments
 can be obtained, as each comment request costs one unit, for all 500
 videos for 15 commenthreads per video, a quota usage of 7500 applies.
@@ -634,9 +587,9 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a hr
 <span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>comment_df</span></code></pre></div>
 <p>Last but not least the dataset is saved into a “pickle” file, which
 allows efficient storage of dataframes. This is especially useful if the
-notebook has to be restarted because the dataset doesn’t has to be build
-from scratch and no quota or api access is required to perform analysis
-on the dataset.</p>
+notebook has to be restarted because the dataset doesn’t have to be
+build from scratch and no quota or api access is required to perform
+analysis on the dataset.</p>
 <div class="sourceCode" id="cb5"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>videos.to_pickle(<span class="st">&quot;datasets/video_data.pkl&quot;</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>comment_df.to_pickle(<span class="st">&quot;datasets/comment_data.pkl&quot;</span>)</span></code></pre></div>
@@ -653,9 +606,9 @@ class="math inline">15 * 10 = 150</span> comments will be retrieved.</p>
 <div class="sourceCode" id="cb8"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>videos.comment_count <span class="op">=</span> videos.comment_count.astype(<span class="bu">int</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>videos.comment_count.mean()</span></code></pre></div>
-<p>However, on average a video has 1250 comments. Thus a lot of fan
-interaction will be missed and is not included in this dataset. In
-addition to that, the dataset only uses the Youtube API as a source,
+<p>However, on average a video has 1250 comments. Because of that, a lot
+of fan interaction will be missed and is not included in this dataset.
+In addition to that, the dataset only uses the Youtube API as a source,
 however Formula 1 fandom spans over multiple platforms, especially
 Twitter, Instagram and Reddit. Thus it is possible that depending on the
 plattform toxic user interactions may be more frequent as they are
@@ -805,13 +758,13 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a h
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>grievance_dict_df.drop([<span class="st">&quot;Unnamed: 0&quot;</span>], axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>categorys <span class="op">=</span> grievance_dict_df.category.unique()</span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>categorys</span></code></pre></div>
-<p>As the dictionary made up of several categories, a set for each
+<p>As the dictionary is made up of several categories, a set for each
 dictionary category has to be created in order to ensure compatibility
 with the dictionary over set intersection function, that was presented
 earlier. Now for each category, the texts are analyzed using this
 method. However instead of saving one counter, that counts word
 occurences, a dictionary which stores each counter for its given
-category.</p>
+category is used.</p>
 <div class="sourceCode" id="cb15"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>grievance_set_dictionary: Dict[<span class="bu">str</span>, Counter] <span class="op">=</span> defaultdict(Counter)</span>
@@ -838,10 +791,10 @@ the website, the webbased tool <a
 href="https://wikitable2csv.ggor.de">wikitable2csv</a> has been used.
 This tool allows the conversion of tables on wiki websites into .csv
 files. As Wikipedia lists every slur in alphabetical order with one
-table per letter, a total of 26 .csv files are created. Thus, in order
-to use the dictionary, all .csv files are in the directory are listed
-and loaded into their own dataframe, which are then concatinated to form
-one big dictionary of ethnic slurs.</p>
+table per letter, a total of 26 .csv files are created. In order to use
+the dictionary, all .csv files are in the directory are listed and
+loaded into their own dataframe, which are then concatinated to form one
+big dictionary of ethnic slurs.</p>
 <div class="sourceCode" id="cb17"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> os <span class="im">import</span> listdir</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os.path</span>
@@ -948,7 +901,7 @@ class="citation" data-cites="distilbert_sentiment">(HF Canonical Model
 Maintainers, 2022)</span>): <img src="./images/map.jpeg"
 alt="prediction_map" /> the prediction scores for producing a positive
 sentiment per <em>country name</em> are depicted. It can be observed,
-that the probabilisty vary drastically between different countries. It
+that the probabilities vary drastically between different countries. It
 has been shown, that for the sentence “This film was filmed in COUNTRY”,
 “France” will produce a positive label with a probability of 0.89 but
 “Afghanistan” will only produce a positive label with a probability of
@@ -971,17 +924,17 @@ train dataset <span class="citation"
 data-cites="tweet_sentiment_classifier">(Barbieri et al., 2020)</span>,
 which poses a risk in using this model, especially as twitter has been
 shown to be a plattform that includes a lot of toxicity and hateful
-content [arouh_toxic_2020]. In addition to that, the tokenizer of the
-model has been trained without a truncation token ([TRUNC]), which is
-used to trim text sequences that are longer than the supported maximum
-length of the model. In the initial release, this hasn’t been a problem
-as the average tweet in the dataset is reported to be 100 tokens long,
-and the models maximum length is at 512 tokens. However, the Youtube
-comments included in the acquired dataset have often shown to produce
-longer sequences than 512 tokens and thus are in need to use the
-truncation token. But, using the truncation token produces a vocabulary
-length mismatch between the tokenizer and the model, which leads to the
-model crashing during processing.</p>
+content <span class="citation" data-cites="arouh_toxic_2020">(Arouh,
+2020)</span>. In addition to that, the tokenizer of the model has been
+trained without a truncation token, which is used to trim text sequences
+that are longer than the supported maximum length of the model. In the
+initial release, this hasn’t been a problem as the average tweet in the
+dataset is reported to be 100 tokens long, and the models maximum length
+is at 512 tokens. However, the Youtube comments included in the acquired
+dataset have often shown to produce longer sequences than 512 tokens and
+thus are in need to use the truncation token. But, using the truncation
+token produces a vocabulary length mismatch between the tokenizer and
+the model, which leads to the model crashing during processing.</p>
 <p>In order to implement the
 distilbert-base-uncased-finetuned-sst-2-english the common
 “Huggingface”, also called “pytorch-transformers” library is used. It
@@ -1036,8 +989,8 @@ fandom is toxic or not.</p>
 <p>The model is a derivative of the BERT transformer family and can only
 work with english texts <span class="citation"
 data-cites="hate_speech_classifier">(Aluru et al., 2020)</span>. It has
-been trained on a combined dataset from 6 publicly available hate speech
-datasets, which include examples from sources like Twitter and
+been trained on a combined dataset from six publicly available hate
+speech datasets, which include examples from sources like Twitter and
 Stormfront. During validation and testing, the model achieved a score of
 0.71, with that being the highest score reached over all models tested.
 It has been shown, that it performs best in high ressource settings,
@@ -1159,12 +1112,12 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a h
 <span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>).plot(kind<span class="op">=</span><span class="st">&quot;barh&quot;</span>, x<span class="op">=</span><span class="st">&quot;columns&quot;</span>, y<span class="op">=</span><span class="st">&quot;relative_counts&quot;</span>, figsize<span class="op">=</span>(<span class="dv">15</span>,<span class="dv">12</span>), xlabel<span class="op">=</span><span class="st">&quot;%&quot;</span>, title<span class="op">=</span><span class="st">&quot;Relative counts for indications of toxic behaviour&quot;</span>)</span>
 <span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> ax.bar_label(ax.containers[<span class="dv">0</span>])</span></code></pre></div>
 <figure>
-<img src="final_files/final_57_0.png" alt="png" />
+<img src="final_files/final_54_0.png" alt="png" />
 <figcaption aria-hidden="true">png</figcaption>
 </figure>
-<p>As shown in the plot, on average across all categorys tested, with
+<p>As shown in the plot, on average across all categories tested, with
 all tests being weighted equally, 21% of all comments show indications
-for toxic behaviour. However, if the figure is broken down to the
+for toxic behaviour. However, if the figure is broken down into the
 individual categories, each test paints a different picture. The tests,
 that can directly detect parts of toxic behaviour such as hate speech,
 ethnic slurs to detect racism and the toxicity dictionary all show low
@@ -1176,8 +1129,8 @@ behaviour is really low, especially in terms of containing racism.
 However, the results for the categories of the grievance dictionary are
 much higher, ranging from 11% for impostor words and up to 39% for words
 in the deadline category. The grievance dictionary showed an especially
-high occurence for words regarding, surveillance, god, desperation and
-frustration. Which is in the context of the sport not suprising, as
+high occurence for words regarding surveillance, god, desperation and
+frustration. In the context of the sport, this is not suprising, as
 Formula 1 is a highly competitive, popular and dangerous sport which is
 government by the FIA, which has been at the center for a lot of
 controversy in the last two seasons (2021 &amp; 2022) <span
@@ -1187,10 +1140,10 @@ FIA, teams bending rules, announcements, team errors and recent crashes
 of drivers. Because of that, it is not unsurprising that surveillance,
 god, desperation and frustration are the categories with the highest
 percentages, as they are a natural and direct consequence of the sports
-characteristics. All other occurences for the other categorys are
+characteristics. All other occurences for the other categories are
 ranging between 10% to 20%, which is not an inconsiderable amount, if
-the topics of some categorys are taken into consideration. Almost 20% of
-comments show indications for suicide, murder, threat, and violence,
+the topics of some categories are taken into consideration. Almost 20%
+of comments show indications for suicide, murder, threat, and violence,
 weaponry and hate. This is not an inconsiderable amount, it means that
 on average every 5th comment contains life threatening and hateful
 content. Also almost 60% of comments show a negative sentiment. Even
@@ -1230,7 +1183,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a h
 class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>videos.groupby(by<span class="op">=</span>videos.published_at.dt.year).<span class="bu">sum</span>().plot(kind<span class="op">=</span><span class="st">&#39;bar&#39;</span>, figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">5</span>))</span></code></pre></div>
 <pre><code>&lt;AxesSubplot: xlabel=&#39;published_at&#39;&gt;</code></pre>
 <figure>
-<img src="final_files/final_61_1.png" alt="png" />
+<img src="final_files/final_58_1.png" alt="png" />
 <figcaption aria-hidden="true">png</figcaption>
 </figure>
 <p>As shwon in the Figure above, the overall number of comments with
@@ -1263,7 +1216,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a h
 <span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">30</span>, color<span class="op">=</span><span class="st">&quot;orange&quot;</span>)</span>
 <span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>ax2.get_legend().remove()</span></code></pre></div>
 <figure>
-<img src="final_files/final_63_0.png" alt="png" />
+<img src="final_files/final_60_0.png" alt="png" />
 <figcaption aria-hidden="true">png</figcaption>
 </figure>
 <p>The figure shows the amount of comments and likes each video got over
@@ -1298,7 +1251,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a h
 <span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>ax.legend()</span></code></pre></div>
 <pre><code>&lt;matplotlib.legend.Legend at 0x328fec5e0&gt;</code></pre>
 <figure>
-<img src="final_files/final_65_1.png" alt="png" />
+<img src="final_files/final_62_1.png" alt="png" />
 <figcaption aria-hidden="true">png</figcaption>
 </figure>
 <div class="sourceCode" id="cb34"><pre
@@ -1325,18 +1278,18 @@ Formula 1 entered a new era of technical regulations, which has been
 called the hybrid era, which has been dominated by Mercedes AMG Petronas
 for seven consecutive years.</p>
 <figure>
-<img src="images/F1_viewers.png" alt="F1 TV viewing figure" />
+<img src="./images/F1_viewers.png" alt="F1 TV viewing figure" />
 <figcaption aria-hidden="true">F1 TV viewing figure</figcaption>
 </figure>
-<p>Which lead many people to leave the sport, as a lot of the
-entertainment factor was missing. Which lead to Formula hitting an all
-time low in 2017. As a result to that worrying development, in 2017
-Formula 1 signed an aggressive exclusivity deal with Netflix for an
-exclusive documentary reality show called “Drive to Survive” which
-should portray the amount of controversy, excitement and high class
-racing that Formula 1 is, while simultaneously showing off exclusive
-behind the scenes content and making Formula 1 more accessible by the
-average Netflix viewer <span class="citation"
+<p>This occasion lead many people to leave the sport, as a lot of the
+entertainment factor was missing. As a consequenece, Formula 1s
+popularity hit an all time low in 2017. As a result to that worrying
+development, in 2017 Formula 1 signed an aggressive exclusivity deal
+with Netflix for an exclusive documentary reality show called “Drive to
+Survive” which should portray the amount of controversy, excitement and
+high class racing that Formula 1 is, while simultaneously showing off
+exclusive behind the scenes content and making Formula 1 more accessible
+by the average Netflix viewer <span class="citation"
 data-cites="goodman_why_2022">(Goodman, 2022)</span>. The first season
 that aired on Netflix was an instant hit and lead to a surge in Formula
 1s popularity across the globe, as reflected in the data showed in the
@@ -1366,15 +1319,15 @@ addition to that, decisions and actions of the governing body of Formula
 class="citation" data-cites="richards_fia_2022">(Richards, 2022)</span>,
 with a prime example, that is still discussed a lot today, being the
 championship decider in 2021. During this race, a late safety car lead
-to a lot of controversy, as the race director “interpreted” the a rule
-which stated that “any” lapped cars must over take the safety car to
-unlap themself and allow for a clean restart. However, in order to allow
-for one lap of thrilling and exciting racing, the race director only
-allowed the cars between the championship rivals to unlap themself and
-restarted the race afterwards. This allowed Max Verstappen to overtake
-Lewis Hamilton and secure his first ever drivers championship. Many
-similar incidents and inconsistencies from the governing body in regards
-to race decisions followed <span class="citation"
+to a lot of controversy, as the race director “interpreted” a rule which
+stated that “any” lapped cars must over take the safety car to unlap
+themself and allow for a clean restart. However, in order to allow for
+one lap of thrilling and exciting racing, the race director only allowed
+the cars between the championship rivals to unlap themself and restarted
+the race afterwards. This allowed Max Verstappen to overtake Lewis
+Hamilton and secure his first ever drivers championship. Many similar
+incidents and inconsistencies from the governing body in regards to race
+decisions followed <span class="citation"
 data-cites="noauthor_fia_nodate">(Race, n.d.)</span>. This lead not only
 to an increasing rivalry between fans of different teams and drivers,
 but also to a lot of fans attacking the FIA. In summary then, is the
@@ -1409,7 +1362,7 @@ dictionary. As explained in the result section, crashes and dangerous
 incidents are part of the sport. Therefore verbalizations about god, or
 death are really common as they can also express relief that a driver
 didn’t die.</p>
-<p>In addition to that, I, as the authot of this report, certainly have
+<p>In addition to that, I, as the author of this report, certainly have
 biased opinions on some of the discussed topics myself. As I am part of
 Formula 1 fandom and a Redbull Racing supporter. Because of that, an
 unbiased review of comment classification with toxic indications by
@@ -1447,7 +1400,6 @@ is (at least partially) a self-made problem.</p>
 import os
 os.system("jupyter nbconvert --to markdown final.ipynb")
 os.system("pandoc -s final.md -t html -o final.html --citeproc --bibliography=refs.bib --csl=apa.csl")
-os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs.bib --csl=apa.csl")
 ```
 
     [NbConvertApp] Converting notebook final.ipynb to markdown
@@ -1456,9 +1408,7 @@ os.system("pandoc -s final.md -t pdf -o final.pdf --citeproc --bibliography=refs
     [NbConvertApp] Making directory final_files
     [NbConvertApp] Making directory final_files
     [NbConvertApp] Making directory final_files
-    [NbConvertApp] Making directory final_files
-    [NbConvertApp] Making directory final_files
-    [NbConvertApp] Writing 57026 bytes to final.md
+    [NbConvertApp] Writing 61232 bytes to final.md
     [WARNING] This document format requires a nonempty <title> element.
       Defaulting to 'final' as the title.
       To specify a title, use 'title' in metadata or --metadata title="...".
